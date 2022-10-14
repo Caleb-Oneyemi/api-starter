@@ -21,6 +21,7 @@
     "helmet": "^6.0.0",
     "http-status": "^1.5.3",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.5",
     "winston": "^3.8.2",
     "zod": "^3.19.1"
   },
