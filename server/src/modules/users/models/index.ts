@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import validator from 'validator'
+import { supportedDialingCodes } from '../../../common'
 import { UserAttributes, UserDoc, UserModel } from '../types'
 
 const userSchema = new Schema(
@@ -43,7 +44,14 @@ const userSchema = new Schema(
     phoneNumber: {
       type: String,
       unique: true,
-      validate: [validator.isMobilePhone, 'Phone Number must be valid'],
+      validate: {
+        validator: function (data: string) {
+          return validator.isMobilePhone(data, supportedDialingCodes, {
+            strictMode: true,
+          })
+        },
+        message: () => 'Phone Number must be valid',
+      },
     },
     photoUrl: {
       type: String,

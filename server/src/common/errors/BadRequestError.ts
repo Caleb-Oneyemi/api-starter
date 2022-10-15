@@ -4,16 +4,16 @@ import { CustomError, ErrorResult } from './CustomError'
 export class BadRequestError extends CustomError {
   statusCode = 400
 
-  constructor(public message: string, public data?: ZodError) {
-    super(message)
+  constructor(public input: string | ZodError) {
+    super(typeof input === 'string' ? input : '')
 
     Object.setPrototypeOf(this, BadRequestError.prototype)
   }
 
   serializeErrors(): Array<ErrorResult> {
-    if (!this.data) return [{ message: this.message }]
+    if (typeof this.input === 'string') return [{ message: this.message }]
 
-    return this.data?.issues?.map(({ message, path }) => {
+    return this.input?.issues?.map(({ message, path }) => {
       const field = (path[0] || '').toString()
       return {
         message,
