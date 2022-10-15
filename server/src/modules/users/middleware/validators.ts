@@ -24,7 +24,7 @@ export const userCreationValidator = async (
     next()
   } catch (err) {
     if (err instanceof ZodError) {
-      next(new BadRequestError(err))
+      return next(new BadRequestError(err))
     }
 
     next(err)
@@ -42,7 +42,7 @@ export const userUpdateValidator = async (
     next()
   } catch (err) {
     if (err instanceof ZodError) {
-      next(new BadRequestError(err))
+      return next(new BadRequestError(err))
     }
 
     next(err)
@@ -69,7 +69,7 @@ export const passwordUpdateValidator = async (
     next()
   } catch (err) {
     if (err instanceof ZodError) {
-      next(new BadRequestError(err))
+      return next(new BadRequestError(err))
     }
 
     next(err)

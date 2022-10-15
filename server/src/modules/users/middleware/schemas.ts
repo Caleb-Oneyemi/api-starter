@@ -3,9 +3,9 @@ import { validatePassword, validatePhone } from './customSchemaValidators'
 
 export const userCreationSchema = z
   .object({
-    firstName: z.string().min(2).max(50),
-    lastName: z.string().min(2).max(50),
-    email: z.string().email(),
+    firstName: z.string().trim().min(2).max(50),
+    lastName: z.string().trim().min(2).max(50),
+    email: z.string().trim().email(),
     password: z.custom(validatePassword),
     phoneNumber: z.custom(validatePhone),
   })

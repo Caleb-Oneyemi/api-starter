@@ -1,4 +1,5 @@
 {
   "port": "PORT",
-  "mongoUrl": "MONGO_URL"
+  "mongoUrl": "MONGO_URL",
+  "jwtSecret": "JWT_SECRET"
 }

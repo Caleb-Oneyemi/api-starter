@@ -35,6 +35,15 @@ export const validatePassword = (data: unknown) => {
     ])
   }
 
+  if (data.includes(' ')) {
+    throw new ZodError([
+      {
+        ...base,
+        message: 'Password must not contain empty spaces',
+      },
+    ])
+  }
+
   if (data.length < 8 || data.length > 50) {
     throw new ZodError([
       {

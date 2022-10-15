@@ -1,5 +1,6 @@
 {
   "port": 7777,
-  "mongoUrl": ""
+  "mongoUrl": "",
+  "jwtSecret": ""
 }
 
