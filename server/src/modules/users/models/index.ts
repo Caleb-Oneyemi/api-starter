@@ -23,7 +23,7 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      validate: [validator.isEmail, 'Email must be valid'],
+      validate: [validator.isEmail],
     },
     customId: {
       type: String,
@@ -50,12 +50,11 @@ const userSchema = new Schema(
             strictMode: true,
           })
         },
-        message: () => 'Phone Number must be valid',
       },
     },
     photoUrl: {
       type: String,
-      validate: [validator.isURL, 'Photo Url not valid'],
+      validate: [validator.isURL],
     },
     deleted: {
       type: Boolean,

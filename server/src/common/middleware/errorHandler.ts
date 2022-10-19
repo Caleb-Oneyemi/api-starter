@@ -3,6 +3,7 @@ import { Request, NextFunction } from 'express'
 import { CustomError } from '../errors'
 import { CustomResponse } from '../types'
 import { logger } from '../logger'
+import { formatMongoError, isMongoError } from '../utils'
 
 export const errorHandler = (
   err: Error,
@@ -14,6 +15,11 @@ export const errorHandler = (
     return res
       .status(err.statusCode)
       .send({ errors: err.serializeErrors(), isSuccess: false })
+  }
+
+  if (isMongoError(err)) {
+    const { status, errors } = formatMongoError(err)
+    return res.status(status).send({ errors, isSuccess: false })
   }
 
   logger.warn(err)
