@@ -1,13 +1,26 @@
 import { z } from 'zod'
-import { validatePassword, validatePhone } from './customSchemaValidators'
+import {
+  validatePassword,
+  validatePhone,
+  passwordValidationMsg,
+  phoneValidationMsg,
+} from './customSchemaValidators'
 
 export const userCreationSchema = z
   .object({
     firstName: z.string().trim().min(2).max(50),
     lastName: z.string().trim().min(2).max(50),
     email: z.string().trim().email(),
-    password: z.custom(validatePassword),
-    phoneNumber: z.custom(validatePhone),
+    phoneNumber: z
+      .string()
+      .trim()
+      .refine(validatePhone, { message: phoneValidationMsg }),
+    password: z
+      .string()
+      .trim()
+      .min(8)
+      .max(50)
+      .refine(validatePassword, { message: passwordValidationMsg }),
   })
   .strict()
 
@@ -16,14 +29,28 @@ export const userUpdateSchema = z
     firstName: z.string().min(2).max(50).optional(),
     lastName: z.string().min(2).max(50).optional(),
     email: z.string().email().optional(),
-    phoneNumber: z.custom(validatePhone).optional(),
+    phoneNumber: z
+      .string()
+      .trim()
+      .refine(validatePhone, { message: phoneValidationMsg })
+      .optional(),
   })
   .strict()
 
 export const passwordUpdateSchema = z
   .object({
-    oldPassword: z.custom(validatePassword),
-    newPassword: z.custom(validatePassword),
-    confirmedNewPassword: z.custom(validatePassword),
+    oldPassword: z.string().trim().min(8).max(50),
+    newPassword: z
+      .string()
+      .trim()
+      .min(8)
+      .max(50)
+      .refine(validatePassword, { message: passwordValidationMsg }),
+    confirmedNewPassword: z
+      .string()
+      .trim()
+      .min(8)
+      .max(50)
+      .refine(validatePassword, { message: passwordValidationMsg }),
   })
   .strict()
