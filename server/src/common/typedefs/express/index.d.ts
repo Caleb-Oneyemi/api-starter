@@ -1,7 +1,4 @@
-import { UserDoc } from '../../../modules/users/types'
-
-type RequestUser = Omit<UserDoc, 'password' | 'salt'> &
-  Partial<Pick<UserDoc, 'password' | 'salt'>>
+import { RequestUser } from '../../../modules/users/types'
 
 declare module 'express' {
   interface Request {

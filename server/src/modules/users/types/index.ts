@@ -28,3 +28,6 @@ export type Filter =
   | Record<'email', string>
   | Record<'id', string>
   | Record<'customId', string>
+
+export type RequestUser = Omit<UserDoc, 'password' | 'salt'> &
+  Partial<Pick<UserDoc, 'password' | 'salt'>>
