@@ -2,16 +2,16 @@ import config from 'config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { UserDoc } from '../../modules/users'
 
-type Payload = Pick<UserDoc, 'id' | 'firstName' | 'lastName' | 'email'>
+type Payload = Pick<UserDoc, 'customId' | 'firstName' | 'lastName' | 'email'>
 
 export const generateToken = ({
-  id,
+  customId,
   firstName,
   lastName,
   email,
 }: Payload): string => {
   const signature: string = config.get('jwtSecret')
-  const token = jwt.sign({ id, firstName, lastName, email }, signature, {
+  const token = jwt.sign({ customId, firstName, lastName, email }, signature, {
     expiresIn: '7d',
   })
   return token
