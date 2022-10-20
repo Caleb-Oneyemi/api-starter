@@ -1,7 +1,7 @@
 import { User } from '../models'
 import { UserAttributes, Filter } from '../types'
 
-export const insertNewUser = async (input: UserAttributes) => {
+export const createUser = async (input: UserAttributes) => {
   return User.build(input)
 }
 
