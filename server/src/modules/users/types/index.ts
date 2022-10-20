@@ -11,6 +11,7 @@ export interface UserAttributes {
   photoUrl?: string
   deleted?: boolean
   deletedAt?: Date
+  salt: string
 }
 
 export interface UserDoc extends UserAttributes, Document {

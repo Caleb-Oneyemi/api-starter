@@ -64,6 +64,9 @@ const userSchema = new Schema(
       type: Date,
       default: null,
     },
+    salt: {
+      type: String,
+    },
   },
   {
     timestamps: true,
