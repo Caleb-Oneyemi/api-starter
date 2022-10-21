@@ -1,6 +1,6 @@
 import config from 'config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { UserDoc } from '../../modules/users/types'
+import { UserDoc } from '../types'
 
 type Payload = Pick<UserDoc, 'customId' | 'firstName' | 'lastName' | 'email'>
 

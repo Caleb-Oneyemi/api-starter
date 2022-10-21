@@ -1,4 +1,4 @@
-import { RequestUser } from '../../../modules/users/types'
+import { RequestUser } from '../../types'
 
 declare module 'express' {
   interface Request {

@@ -1,7 +1,11 @@
 import { Schema, model } from 'mongoose'
 import validator from 'validator'
-import { supportedDialingCodes } from '../../../common'
-import { UserAttributes, UserDoc, UserModel } from '../types'
+import {
+  UserAttributes,
+  UserDoc,
+  UserModel,
+  supportedDialingCodes,
+} from '../../../common'
 
 const userSchema = new Schema(
   {

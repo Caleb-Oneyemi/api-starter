@@ -1,5 +1,5 @@
 import { User } from '../models'
-import { UserAttributes, Filter } from '../types'
+import { UserAttributes, Filter } from '../../../common'
 
 export const createUser = async (input: UserAttributes) => {
   return User.build(input)

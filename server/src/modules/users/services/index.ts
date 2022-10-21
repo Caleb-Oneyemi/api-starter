@@ -1,8 +1,7 @@
 import crypto from 'crypto'
 import { nanoid } from 'nanoid'
 import * as UserDAL from '../data'
-import { UserAttributes } from '../types'
-import { hashPassword } from '../../../common'
+import { hashPassword, UserAttributes } from '../../../common'
 
 export const createUser = async (input: UserAttributes) => {
   const hashedPassword = await hashPassword(input.password)

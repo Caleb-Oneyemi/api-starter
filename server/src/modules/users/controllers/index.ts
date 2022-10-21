@@ -1,11 +1,11 @@
 import httpStatus from 'http-status'
-import { UserAttributes } from '../types'
 import * as UserService from '../services'
 import {
   ResponseData,
   generateToken,
   ControllerInput,
   controllerWrapper,
+  UserAttributes,
 } from '../../../common'
 
 export const createUser = controllerWrapper(
