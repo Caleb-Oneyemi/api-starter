@@ -1,7 +1,7 @@
-# MERN TEMPLATE
+# API STARTER
 
 ## ABOUT
-A template setup for fullstack projects.
+Starter files for backend projects.
 
 ## TECH STACK
 
@@ -9,6 +9,4 @@ A template setup for fullstack projects.
 * Express
 * MongoDB
 * Mongoose (ODM)
-* React (TypeScript)
-* Redux
 
