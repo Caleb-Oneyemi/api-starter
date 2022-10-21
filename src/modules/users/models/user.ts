@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { AppUserAttributes } from '../../../common'
+import { UserAttributes } from '../../../common'
 
-const userSchema = new Schema<Pick<AppUserAttributes, 'customId' | 'password'>>(
+const userSchema = new Schema<UserAttributes>(
   {
     customId: {
       type: String,
@@ -14,6 +14,9 @@ const userSchema = new Schema<Pick<AppUserAttributes, 'customId' | 'password'>>(
       required: true,
       trim: true,
       minlength: 7,
+    },
+    salt: {
+      type: String,
     },
   },
   {

@@ -57,9 +57,6 @@ const appUserSchema = new Schema<AppUserAttributes, AppUserModel>({
     type: Date,
     default: null,
   },
-  salt: {
-    type: String,
-  },
 })
 
 appUserSchema.statics.build = (input: AppUserAttributes) => {
