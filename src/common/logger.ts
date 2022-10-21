@@ -9,7 +9,7 @@ export const logger = createLogger({
     }),
     format.printf(
       (info) =>
-        `[template_service: ${info.timestamp as string}] ${info.level}: ${
+        `[api_service: ${info.timestamp as string}] ${info.level}: ${
           info.message
         }`,
     ),

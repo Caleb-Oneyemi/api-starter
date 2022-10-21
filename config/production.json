@@ -1,6 +1,8 @@
 {
   "port": 7777,
   "mongoUrl": "",
-  "jwtSecret": ""
+  "jwtSecret": "",
+  "serviceUsername": "",
+  "servicePassword": ""
 }
 

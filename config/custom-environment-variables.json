@@ -1,5 +1,7 @@
 {
   "port": "PORT",
   "mongoUrl": "MONGO_URL",
-  "jwtSecret": "JWT_SECRET"
+  "jwtSecret": "JWT_SECRET",
+  "serviceUsername": "SERVICE_USERNAME",
+  "servicePassword": "SERVICE_PASSWORD"
 }

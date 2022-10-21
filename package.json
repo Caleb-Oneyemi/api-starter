@@ -1,5 +1,5 @@
 {
-  "name": "mern-template",
+  "name": "api-starter",
   "version": "1.0.0",
   "main": "dist/index.js",
   "author": "Caleb Oneyemi",
@@ -8,7 +8,7 @@
     "node": "16.10.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production pm2 start -i 0 --name template dist/index.js",
+    "start": "NODE_ENV=production pm2 start -i 0 --name api dist/index.js",
     "build": "tsc --project tsconfig.prod.json",
     "dev": "dotenv nodemon src/index.ts"
   },

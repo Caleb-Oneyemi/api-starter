@@ -1,5 +1,10 @@
-import { AppUser } from '../models'
-import { Filter, AppUserAttributes } from '../../../common'
+import { AppUser, ServiceUser, User } from '../models'
+import {
+  Filter,
+  AppUserAttributes,
+  ServiceUserAttributes,
+  UserTypes,
+} from '../../../common'
 
 export const createAppUser = async (input: AppUserAttributes) => {
   return AppUser.build(input)
@@ -32,4 +37,17 @@ export const softDeleteAppUser = async (filter: Filter) => {
 
 export const hardDeleteAppUser = async (filter: Filter) => {
   return AppUser.findOneAndRemove(filter)
+}
+
+export const createServiceUser = async (input: ServiceUserAttributes) => {
+  return ServiceUser.build(input)
+}
+
+export const getServiceUserByUsername = async (username: string) => {
+  return ServiceUser.findOne({ username })
+}
+
+export const getAppOrServiceUserByCustomId = async (customId: string) => {
+  const { APP_USER, SERVICE_USER } = UserTypes
+  return User.findOne({ customId, type: { $in: [APP_USER, SERVICE_USER] } })
 }
