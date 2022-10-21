@@ -31,3 +31,18 @@ export type Filter =
 
 export type RequestUser = Omit<UserDoc, 'password' | 'salt'> &
   Partial<Pick<UserDoc, 'password' | 'salt'>>
+
+export interface ServiceUserAttributes {
+  userName: string
+  password: string
+}
+
+export interface ServiceUserDoc extends ServiceUserAttributes, Document {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface ServiceUserModel extends Model<ServiceUserDoc> {
+  build(input: ServiceUserAttributes): ServiceUserDoc
+}
