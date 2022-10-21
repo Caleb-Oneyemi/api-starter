@@ -1,6 +1,6 @@
 import { Document, Model } from 'mongoose'
 
-export interface UserAttributes {
+export interface AppUserAttributes {
   firstName: string
   lastName: string
   email: string
@@ -14,14 +14,14 @@ export interface UserAttributes {
   salt: string
 }
 
-export interface UserDoc extends UserAttributes, Document {
+export interface AppUserDoc extends AppUserAttributes, Document {
   id: string
   createdAt: Date
   updatedAt: Date
 }
 
-export interface UserModel extends Model<UserDoc> {
-  build(input: UserAttributes): UserDoc
+export interface AppUserModel extends Model<AppUserDoc> {
+  build(input: AppUserAttributes): AppUserDoc
 }
 
 export type Filter =
@@ -29,12 +29,13 @@ export type Filter =
   | Record<'id', string>
   | Record<'customId', string>
 
-export type RequestUser = Omit<UserDoc, 'password' | 'salt'> &
-  Partial<Pick<UserDoc, 'password' | 'salt'>>
+export type RequestUser = Omit<AppUserDoc, 'password' | 'salt'> &
+  Partial<Pick<AppUserDoc, 'password' | 'salt'>>
 
 export interface ServiceUserAttributes {
-  userName: string
+  username: string
   password: string
+  customId: string
 }
 
 export interface ServiceUserDoc extends ServiceUserAttributes, Document {

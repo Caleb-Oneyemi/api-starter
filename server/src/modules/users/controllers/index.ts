@@ -5,12 +5,14 @@ import {
   generateToken,
   ControllerInput,
   controllerWrapper,
-  UserAttributes,
+  AppUserAttributes,
 } from '../../../common'
 
 export const createUser = controllerWrapper(
   httpStatus.CREATED,
-  async ({ input }: ControllerInput<UserAttributes>): Promise<ResponseData> => {
+  async ({
+    input,
+  }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
     const result = await UserService.createUser(input)
     const { customId, firstName, lastName, email, salt } = result
     const jwtToken = generateToken(

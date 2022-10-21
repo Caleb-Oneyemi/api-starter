@@ -1,8 +1,8 @@
 import config from 'config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { UserDoc } from '../types'
+import { AppUserDoc } from '../types'
 
-type Payload = Pick<UserDoc, 'customId' | 'firstName' | 'lastName' | 'email'>
+type Payload = Pick<AppUserDoc, 'customId' | 'firstName' | 'lastName' | 'email'>
 
 export const generateToken = (
   { customId, firstName, lastName, email }: Payload,

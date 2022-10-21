@@ -1,35 +1,35 @@
-import { User } from '../models'
-import { UserAttributes, Filter } from '../../../common'
+import { AppUser } from '../models'
+import { Filter, AppUserAttributes } from '../../../common'
 
-export const createUser = async (input: UserAttributes) => {
-  return User.build(input)
+export const createAppUser = async (input: AppUserAttributes) => {
+  return AppUser.build(input)
 }
 
-export const getUserById = async (id: string) => {
-  return User.findById(id)
+export const getAppUserById = async (id: string) => {
+  return AppUser.findById(id)
 }
 
-export const getUserByCustomId = async (customId: string) => {
-  return User.findOne({ customId })
+export const getAppUserByCustomId = async (customId: string) => {
+  return AppUser.findOne({ customId })
 }
 
-export const getUserByEmail = async (email: string) => {
-  return User.findOne({ email })
+export const getAppUserByEmail = async (email: string) => {
+  return AppUser.findOne({ email })
 }
 
-export const updateUser = async (
+export const updateAppUser = async (
   filter: Filter,
-  input: Partial<UserAttributes>,
+  input: Partial<AppUserAttributes>,
 ) => {
-  return User.findOneAndUpdate(filter, { $set: input })
+  return AppUser.findOneAndUpdate(filter, { $set: input })
 }
 
-export const softDeleteUser = async (filter: Filter) => {
-  return User.findOneAndUpdate(filter, {
+export const softDeleteAppUser = async (filter: Filter) => {
+  return AppUser.findOneAndUpdate(filter, {
     $set: { deleted: true, deletedAt: new Date() },
   })
 }
 
-export const hardDeleteUser = async (filter: Filter) => {
-  return User.findOneAndRemove(filter)
+export const hardDeleteAppUser = async (filter: Filter) => {
+  return AppUser.findOneAndRemove(filter)
 }

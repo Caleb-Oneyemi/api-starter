@@ -1,7 +1,7 @@
 import { ZodError } from 'zod'
 import { Request, NextFunction } from 'express'
 import { BadRequestError, ConflictError, CustomResponse } from '../../../common'
-import { getUserByEmail } from '../data'
+import { getAppUserByEmail } from '../data'
 import {
   userCreationSchema,
   userUpdateSchema,
@@ -16,7 +16,7 @@ export const userCreationValidator = async (
   try {
     await userCreationSchema.parseAsync(req.body)
 
-    const existingUser = await getUserByEmail(req.body.email)
+    const existingUser = await getAppUserByEmail(req.body.email)
     if (existingUser) {
       return next(new ConflictError('email already in use'))
     }

@@ -1,9 +1,9 @@
 import crypto from 'crypto'
 import { nanoid } from 'nanoid'
 import * as UserDAL from '../data'
-import { hashPassword, UserAttributes } from '../../../common'
+import { hashPassword, AppUserAttributes } from '../../../common'
 
-export const createUser = async (input: UserAttributes) => {
+export const createUser = async (input: AppUserAttributes) => {
   const hashedPassword = await hashPassword(input.password)
   const data = {
     ...input,
@@ -13,6 +13,6 @@ export const createUser = async (input: UserAttributes) => {
     salt: crypto.randomBytes(24).toString('hex'),
   }
 
-  const result = await UserDAL.createUser(data)
+  const result = await UserDAL.createAppUser(data)
   return result
 }

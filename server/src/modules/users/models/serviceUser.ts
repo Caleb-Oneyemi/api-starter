@@ -1,25 +1,20 @@
-import { Schema, model } from 'mongoose'
-import validator from 'validator'
+import { Schema } from 'mongoose'
+import { User } from './user'
 import {
   ServiceUserAttributes,
   ServiceUserDoc,
   ServiceUserModel,
+  UserTypes,
 } from '../../../common'
 
-const serviceUserSchema = new Schema(
+const serviceUserSchema = new Schema<ServiceUserAttributes, ServiceUserModel>(
   {
     username: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
       lowercase: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 7,
-      validate: [validator.isStrongPassword],
     },
   },
   {
@@ -40,7 +35,7 @@ serviceUserSchema.statics.build = (input: ServiceUserAttributes) => {
   return new ServiceUser(input).save()
 }
 
-export const ServiceUser = model<ServiceUserDoc, ServiceUserModel>(
-  'ServiceUser',
+export const ServiceUser = User.discriminator<ServiceUserDoc, ServiceUserModel>(
+  UserTypes.SERVICE_USER,
   serviceUserSchema,
 )
