@@ -1,15 +1,12 @@
 import config from 'config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { AppUserDoc } from '../types'
+import { UserAttributes } from '../types'
 
-type Payload = Pick<AppUserDoc, 'customId' | 'firstName' | 'lastName' | 'email'>
+type Payload = Pick<UserAttributes, 'customId'>
 
-export const generateToken = (
-  { customId, firstName, lastName, email }: Payload,
-  salt: string,
-): string => {
+export const generateToken = ({ customId }: Payload, salt: string): string => {
   const signature: string = config.get('jwtSecret') + salt
-  const token = jwt.sign({ customId, firstName, lastName, email }, signature, {
+  const token = jwt.sign({ customId }, signature, {
     expiresIn: '7d',
   })
   return token

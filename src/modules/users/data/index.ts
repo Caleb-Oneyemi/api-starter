@@ -3,7 +3,6 @@ import {
   Filter,
   AppUserAttributes,
   ServiceUserAttributes,
-  UserTypes,
   AppUserDoc,
   ServiceUserDoc,
 } from '../../../common'
@@ -49,9 +48,8 @@ export const getServiceUserByUsername = async (username: string) => {
   return ServiceUser.findOne({ username })
 }
 
-export const getAppOrServiceUserByCustomId = async (
+export const getUserByCustomId = async (
   customId: string,
 ): Promise<AppUserDoc | ServiceUserDoc | null> => {
-  const { APP_USER, SERVICE_USER } = UserTypes
-  return User.findOne({ customId, type: { $in: [APP_USER, SERVICE_USER] } })
+  return User.findOne({ customId })
 }

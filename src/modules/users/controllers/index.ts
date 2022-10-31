@@ -14,11 +14,8 @@ export const createUser = controllerWrapper(
     input,
   }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
     const result = await UserService.createUser(input)
-    const { customId, firstName, lastName, email, salt } = result
-    const jwtToken = generateToken(
-      { customId, firstName, lastName, email },
-      salt,
-    )
+    const { customId, salt } = result
+    const jwtToken = generateToken({ customId }, salt)
 
     return { ...result.toJSON(), token: jwtToken }
   },

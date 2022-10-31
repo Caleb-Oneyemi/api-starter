@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import config from 'config'
 import { nanoid } from 'nanoid'
 import { logger, hashPassword } from '../common'
@@ -20,7 +21,8 @@ export const createDefaultServiceUser = async () => {
   try {
     const customId = nanoid(8)
     const password = await hashPassword(pass)
-    await createServiceUser({ username, password, customId })
+    const salt = crypto.randomBytes(24).toString('hex')
+    await createServiceUser({ username, password, customId, salt })
     logger.debug('service user created successfully')
   } catch (err) {
     logger.warn(`failed to create service user because ${err}`)
