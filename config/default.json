@@ -3,5 +3,7 @@
   "mongoUrl": "",
   "jwtSecret": "",
   "adminUsername": "",
-  "adminPassword": ""
+  "adminPassword": "",
+  "sendgridApiKey": "",
+  "sendgridSender": ""
 }

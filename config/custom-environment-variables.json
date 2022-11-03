@@ -3,5 +3,7 @@
   "mongoUrl": "MONGO_URL",
   "jwtSecret": "JWT_SECRET",
   "adminUsername": "ADMIN_USERNAME",
-  "adminPassword": "ADMIN_PASSWORD"
+  "adminPassword": "ADMIN_PASSWORD",
+  "sendgridApiKey": "SENDGRID_API_KEY",
+  "sendgridSender": "SENDGRID_SENDER"
 }
