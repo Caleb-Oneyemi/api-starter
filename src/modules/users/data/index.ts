@@ -1,10 +1,10 @@
-import { AppUser, ServiceUser, User } from '../models'
+import { AppUser, AdminUser, User } from '../models'
 import {
   Filter,
   AppUserAttributes,
-  ServiceUserAttributes,
+  AdminUserAttributes,
   AppUserDoc,
-  ServiceUserDoc,
+  AdminUserDoc,
 } from '../../../common'
 
 export const createAppUser = async (input: AppUserAttributes) => {
@@ -40,16 +40,16 @@ export const hardDeleteAppUser = async (filter: Filter) => {
   return AppUser.findOneAndRemove(filter)
 }
 
-export const createServiceUser = async (input: ServiceUserAttributes) => {
-  return ServiceUser.build(input)
+export const createAdminUser = async (input: AdminUserAttributes) => {
+  return AdminUser.build(input)
 }
 
-export const getServiceUserByUsername = async (username: string) => {
-  return ServiceUser.findOne({ username })
+export const getAdminUserByUsername = async (username: string) => {
+  return AdminUser.findOne({ username })
 }
 
 export const getUserByCustomId = async (
   customId: string,
-): Promise<AppUserDoc | ServiceUserDoc | null> => {
+): Promise<AppUserDoc | AdminUserDoc | null> => {
   return User.findOne({ customId })
 }

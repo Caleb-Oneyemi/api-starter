@@ -1,2 +1,2 @@
 import './db'
-import './defaultServiceUser'
+import './defaultAdminUser'

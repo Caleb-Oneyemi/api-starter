@@ -32,22 +32,19 @@ export type Filter =
   | Record<'id', string>
   | Record<'customId', string>
 
-export type RequestUser = Omit<
-  AppUserDoc | ServiceUserDoc,
-  'password' | 'salt'
-> &
-  Partial<Pick<AppUserDoc | ServiceUserDoc, 'password' | 'salt'>>
+export type RequestUser = Omit<AppUserDoc | AdminUserDoc, 'password' | 'salt'> &
+  Partial<Pick<AppUserDoc | AdminUserDoc, 'password' | 'salt'>>
 
-export interface ServiceUserAttributes extends UserAttributes {
+export interface AdminUserAttributes extends UserAttributes {
   username: string
 }
 
-export interface ServiceUserDoc extends ServiceUserAttributes, Document {
+export interface AdminUserDoc extends AdminUserAttributes, Document {
   id: string
   createdAt: Date
   updatedAt: Date
 }
 
-export interface ServiceUserModel extends Model<ServiceUserDoc> {
-  build(input: ServiceUserAttributes): ServiceUserDoc
+export interface AdminUserModel extends Model<AdminUserDoc> {
+  build(input: AdminUserAttributes): AdminUserDoc
 }

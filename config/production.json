@@ -2,7 +2,6 @@
   "port": 7777,
   "mongoUrl": "",
   "jwtSecret": "",
-  "serviceUsername": "",
-  "servicePassword": ""
+  "adminUsername": "",
+  "adminPassword": ""
 }
-

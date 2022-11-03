@@ -1,13 +1,13 @@
 import { Schema } from 'mongoose'
 import { User } from './user'
 import {
-  ServiceUserAttributes,
-  ServiceUserDoc,
-  ServiceUserModel,
+  AdminUserAttributes,
+  AdminUserDoc,
+  AdminUserModel,
   UserTypes,
 } from '../../../common'
 
-const serviceUserSchema = new Schema<ServiceUserAttributes, ServiceUserModel>(
+const adminUserSchema = new Schema<AdminUserAttributes, AdminUserModel>(
   {
     username: {
       type: String,
@@ -30,12 +30,12 @@ const serviceUserSchema = new Schema<ServiceUserAttributes, ServiceUserModel>(
   },
 )
 
-serviceUserSchema.statics.build = (input: ServiceUserAttributes) => {
+adminUserSchema.statics.build = (input: AdminUserAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  return new ServiceUser(input).save()
+  return new AdminUser(input).save()
 }
 
-export const ServiceUser = User.discriminator<ServiceUserDoc, ServiceUserModel>(
-  UserTypes.SERVICE_USER,
-  serviceUserSchema,
+export const AdminUser = User.discriminator<AdminUserDoc, AdminUserModel>(
+  UserTypes.ADMIN_USER,
+  adminUserSchema,
 )
