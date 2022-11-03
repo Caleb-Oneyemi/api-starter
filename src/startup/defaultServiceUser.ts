@@ -1,7 +1,5 @@
-import crypto from 'crypto'
 import config from 'config'
-import { nanoid } from 'nanoid'
-import { logger, hashPassword } from '../common'
+import { logger, hashPassword, generateCustomId, generateSalt } from '../common'
 import {
   createServiceUser,
   getServiceUserByUsername,
@@ -19,9 +17,11 @@ export const createDefaultServiceUser = async () => {
   }
 
   try {
-    const customId = nanoid(8)
-    const password = await hashPassword(pass)
-    const salt = crypto.randomBytes(24).toString('hex')
+    const [password, customId] = await Promise.all([
+      hashPassword(pass),
+      generateCustomId(),
+    ])
+    const salt = generateSalt(24)
     await createServiceUser({ username, password, customId, salt })
     logger.debug('service user created successfully')
   } catch (err) {

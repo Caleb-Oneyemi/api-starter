@@ -1,16 +1,26 @@
-import crypto from 'crypto'
-import { nanoid } from 'nanoid'
 import * as UserDAL from '../data'
-import { hashPassword, AppUserAttributes } from '../../../common'
+import {
+  hashPassword,
+  AppUserAttributes,
+  generateSalt,
+  generateCode,
+  generateCustomId,
+} from '../../../common'
 
 export const createUser = async (input: AppUserAttributes) => {
-  const hashedPassword = await hashPassword(input.password)
+  const [password, customId] = await Promise.all([
+    hashPassword(input.password),
+    generateCustomId(),
+  ])
+  const confirmationCode = generateCode(6)
+  const salt = generateSalt(24)
+
   const data = {
     ...input,
-    customId: nanoid(8),
-    confirmationCode: Math.floor(100000 + Math.random() * 900000),
-    password: hashedPassword,
-    salt: crypto.randomBytes(24).toString('hex'),
+    customId,
+    confirmationCode,
+    password,
+    salt,
   }
 
   const result = await UserDAL.createAppUser(data)
