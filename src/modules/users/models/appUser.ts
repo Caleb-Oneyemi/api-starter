@@ -53,6 +53,10 @@ const appUserSchema = new Schema<AppUserAttributes, AppUserModel>({
     type: Date,
     default: null,
   },
+  confirmed: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 appUserSchema.statics.build = (input: AppUserAttributes) => {

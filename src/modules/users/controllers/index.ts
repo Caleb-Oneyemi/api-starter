@@ -16,3 +16,11 @@ export const createUser = controllerWrapper(
     return { ...result.toJSON() }
   },
 )
+
+export const verifyToken = controllerWrapper(
+  httpStatus.OK,
+  async ({ params }): Promise<ResponseData> => {
+    await UserService.verifyAccount(params.token)
+    return null
+  },
+)

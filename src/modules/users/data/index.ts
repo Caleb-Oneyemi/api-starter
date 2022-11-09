@@ -27,7 +27,7 @@ export const updateAppUser = async (
   filter: Filter,
   input: Partial<AppUserAttributes>,
 ) => {
-  return AppUser.findOneAndUpdate(filter, { $set: input })
+  return AppUser.findOneAndUpdate(filter, { $set: input }, { new: true })
 }
 
 export const softDeleteAppUser = async (filter: Filter) => {
