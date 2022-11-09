@@ -7,6 +7,7 @@ import {
   controllerWrapper,
   AppUserAttributes,
 } from '../../../common'
+import { sendRegistrationMail } from '../../../providers'
 
 export const createUser = controllerWrapper(
   httpStatus.CREATED,
@@ -14,9 +15,12 @@ export const createUser = controllerWrapper(
     input,
   }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
     const result = await UserService.createUser(input)
-    const { customId, salt } = result
-    const jwtToken = generateToken({ customId }, salt)
+    const { customId, salt, firstName, email } = result
 
-    return { ...result.toJSON(), token: jwtToken }
+    const expires = 60 * 60 * 48
+    const token = generateToken({ id: customId }, salt, expires)
+
+    await sendRegistrationMail({ firstName, email }, token)
+    return { ...result.toJSON() }
   },
 )

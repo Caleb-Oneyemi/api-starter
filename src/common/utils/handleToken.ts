@@ -1,13 +1,18 @@
 import config from 'config'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { UserAttributes } from '../types'
+interface Payload {
+  id: string
+}
 
-type Payload = Pick<UserAttributes, 'customId'>
-
-export const generateToken = ({ customId }: Payload, salt: string): string => {
+export const generateToken = (
+  { id }: Payload,
+  salt: string,
+  expires?: number,
+): string => {
   const signature: string = config.get('jwtSecret') + salt
-  const token = jwt.sign({ customId }, signature, {
-    expiresIn: '7d',
+  const expiresIn = expires ? expires : '7d'
+  const token = jwt.sign({ id }, signature, {
+    expiresIn,
   })
   return token
 }
