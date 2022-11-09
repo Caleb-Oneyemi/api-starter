@@ -30,10 +30,6 @@ const appUserSchema = new Schema<AppUserAttributes, AppUserModel>({
     lowercase: true,
     validate: [validator.isEmail],
   },
-  confirmationCode: {
-    type: Number,
-    required: true,
-  },
   phoneNumber: {
     type: String,
     unique: true,

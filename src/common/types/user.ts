@@ -10,7 +10,6 @@ export interface AppUserAttributes extends UserAttributes {
   firstName: string
   lastName: string
   email: string
-  confirmationCode: number
   phoneNumber?: string
   photoUrl?: string
   deleted?: boolean

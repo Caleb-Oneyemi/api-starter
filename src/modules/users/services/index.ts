@@ -1,10 +1,11 @@
 import * as UserDAL from '../data'
+import { sendRegistrationMail } from '../../../providers'
 import {
   hashPassword,
   AppUserAttributes,
   generateSalt,
-  generateCode,
   generateCustomId,
+  generateToken,
 } from '../../../common'
 
 export const createUser = async (input: AppUserAttributes) => {
@@ -12,17 +13,23 @@ export const createUser = async (input: AppUserAttributes) => {
     hashPassword(input.password),
     generateCustomId(),
   ])
-  const confirmationCode = generateCode(6)
   const salt = generateSalt(24)
 
   const data = {
     ...input,
     customId,
-    confirmationCode,
     password,
     salt,
   }
 
   const result = await UserDAL.createAppUser(data)
+
+  const expires = 60 * 60 * 48
+  const token = generateToken({ id: customId }, salt, expires)
+
+  await sendRegistrationMail(
+    { firstName: data.firstName, email: data.email },
+    token,
+  )
   return result
 }
