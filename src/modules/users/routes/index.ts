@@ -1,40 +1,43 @@
 import { Router } from 'express'
 import { isAuthenticated } from '../../../common'
-import * as UserController from '../controllers'
+
 import {
   userCreationValidator,
   userUpdateValidator,
   passwordUpdateValidator,
+  loginUserValidator,
 } from '../middleware'
+
+import {
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+  loginUser,
+  verifyAccount,
+  resendAccountVerification,
+  changePassword,
+} from '../controllers'
 
 const router = Router()
 
-router.post('/', userCreationValidator, UserController.createUser)
-
-router.get('/verify/:token', UserController.verifyAccount)
-
-router.post(
-  '/resend/account-verification',
-  isAuthenticated,
-  UserController.resendAccountVerification,
-)
-
-router.get('/', isAuthenticated, UserController.getUser)
-
-router.patch(
-  '/',
-  isAuthenticated,
-  userUpdateValidator,
-  UserController.updateUser,
-)
-
-router.patch(
-  '/change-password',
-  isAuthenticated,
-  passwordUpdateValidator,
-  UserController.changePassword,
-)
-
-router.delete('/', isAuthenticated, UserController.deleteUser)
+router
+  .post('/', userCreationValidator, createUser)
+  .get('/', isAuthenticated, getUser)
+  .patch('/', isAuthenticated, userUpdateValidator, updateUser)
+  .delete('/', isAuthenticated, deleteUser)
+  .post('/login', loginUserValidator, loginUser)
+  .get('/verify/:token', verifyAccount)
+  .post(
+    '/resend/account-verification',
+    isAuthenticated,
+    resendAccountVerification,
+  )
+  .patch(
+    '/change-password',
+    isAuthenticated,
+    passwordUpdateValidator,
+    changePassword,
+  )
 
 export { router as userRoutes }

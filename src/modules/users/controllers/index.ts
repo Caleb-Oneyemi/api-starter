@@ -18,6 +18,16 @@ export const createUser = controllerWrapper(
   },
 )
 
+export const loginUser = controllerWrapper(
+  httpStatus.OK,
+  async ({
+    input,
+  }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
+    const result = await UserService.loginUser(input)
+    return result
+  },
+)
+
 export const getUser = controllerWrapper(
   httpStatus.OK,
   async ({ user }): Promise<ResponseData> => {

@@ -47,6 +47,26 @@ export const createUser = async (input: AppUserAttributes) => {
   return result
 }
 
+export const loginUser = async (
+  input: Pick<AppUserAttributes, 'email' | 'password'>,
+) => {
+  const existingUser = await UserDAL.getAppUserByEmail(input.email)
+  if (!existingUser) {
+    throw new BadRequestError('invalid credentials')
+  }
+
+  const isPasswordValid = await verifyPassword(
+    input.password,
+    existingUser.password,
+  )
+  if (!isPasswordValid) {
+    throw new BadRequestError('invalid credentials')
+  }
+
+  const token = generateToken({ id: existingUser.customId }, existingUser.salt)
+  return { user: existingUser, token }
+}
+
 export const verifyAccount = async (token: string) => {
   const { id } = decodeToken(token)
   const user = await UserDAL.getAppUserByCustomId(id)

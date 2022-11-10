@@ -6,6 +6,7 @@ import {
   userCreationSchema,
   userUpdateSchema,
   passwordUpdateSchema,
+  loginUserSchema,
 } from './schemas'
 
 export const userCreationValidator = async (
@@ -21,6 +22,23 @@ export const userCreationValidator = async (
       return next(new ConflictError('email already in use'))
     }
 
+    next()
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return next(new BadRequestError(err))
+    }
+
+    next(err)
+  }
+}
+
+export const loginUserValidator = async (
+  req: Request,
+  res: CustomResponse,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    await loginUserSchema.parseAsync(req.body)
     next()
   } catch (err) {
     if (err instanceof ZodError) {
