@@ -25,7 +25,15 @@ export const getUser = controllerWrapper(
   },
 )
 
-export const verifyToken = controllerWrapper(
+export const updateUser = controllerWrapper(
+  httpStatus.OK,
+  async ({ user, input }): Promise<ResponseData> => {
+    const result = await UserService.updateUser(input, user)
+    return result
+  },
+)
+
+export const verifyAccount = controllerWrapper(
   httpStatus.OK,
   async ({ params }): Promise<ResponseData> => {
     await UserService.verifyAccount(params.token)

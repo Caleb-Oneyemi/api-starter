@@ -23,6 +23,10 @@ export const getAppUserByEmail = async (email: string) => {
   return AppUser.findOne({ email })
 }
 
+export const getAppUserByPhone = async (phoneNumber: string) => {
+  return AppUser.findOne({ phoneNumber })
+}
+
 export const updateAppUser = async (
   filter: Filter,
   input: Partial<AppUserAttributes>,

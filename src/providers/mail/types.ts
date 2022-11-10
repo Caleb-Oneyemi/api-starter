@@ -1,4 +1,4 @@
-export type MailType = 'register'
+export type MailType = 'register' | 'emailChange'
 
 export interface MailInput {
   to: string
@@ -6,7 +6,7 @@ export interface MailInput {
   html: string
 }
 
-export interface RegistrationMailInput {
+export interface NewMailInput {
   firstName: string
   email: string
 }

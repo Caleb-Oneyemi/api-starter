@@ -1,7 +1,7 @@
 import { ZodError } from 'zod'
 import { Request, NextFunction } from 'express'
 import { BadRequestError, ConflictError, CustomResponse } from '../../../common'
-import { getAppUserByEmail } from '../data'
+import { getAppUserByEmail, getAppUserByPhone } from '../data'
 import {
   userCreationSchema,
   userUpdateSchema,
@@ -38,6 +38,19 @@ export const userUpdateValidator = async (
 ): Promise<void> => {
   try {
     await userUpdateSchema.parseAsync(req.body)
+
+    const [emailUser, phoneUser] = await Promise.all([
+      getAppUserByEmail(req.body.email),
+      getAppUserByPhone(req.body.phoneNumber),
+    ])
+
+    if (emailUser) {
+      return next(new ConflictError('email already in use'))
+    }
+
+    if (phoneUser) {
+      return next(new ConflictError('phone number already in use'))
+    }
 
     next()
   } catch (err) {

@@ -1,6 +1,9 @@
 import { TokenExpiredError } from 'jsonwebtoken'
 import * as UserDAL from '../data'
-import { sendRegistrationMail } from '../../../providers'
+import {
+  sendRegistrationMail,
+  sendEmailVerificationMail,
+} from '../../../providers'
 import {
   hashPassword,
   AppUserAttributes,
@@ -11,7 +14,14 @@ import {
   validateToken,
   NotFoundError,
   BadRequestError,
+  RequestUser,
 } from '../../../common'
+
+const getMailToken = (customId: string, salt: string) => {
+  const expires = 60 * 60 * 48
+  const token = generateToken({ id: customId }, salt, expires)
+  return token
+}
 
 export const createUser = async (input: AppUserAttributes) => {
   const [password, customId] = await Promise.all([
@@ -28,9 +38,7 @@ export const createUser = async (input: AppUserAttributes) => {
   }
 
   const result = await UserDAL.createAppUser(data)
-
-  const expires = 60 * 60 * 48
-  const token = generateToken({ id: customId }, salt, expires)
+  const token = getMailToken(customId, salt)
 
   await sendRegistrationMail(
     { firstName: data.firstName, email: data.email },
@@ -58,4 +66,26 @@ export const verifyAccount = async (token: string) => {
   }
 
   await UserDAL.updateAppUser({ customId: id }, { confirmed: true })
+}
+
+export const updateUser = async (
+  input: Partial<
+    Pick<AppUserAttributes, 'firstName' | 'lastName' | 'email' | 'phoneNumber'>
+  >,
+  user?: RequestUser,
+) => {
+  if (!user) {
+    return null
+  }
+
+  const result = await UserDAL.updateAppUser({ customId: user.customId }, input)
+
+  if (input.email && result != null) {
+    const { customId, salt, firstName, email } = result
+    const token = getMailToken(customId, salt)
+
+    await sendEmailVerificationMail({ firstName, email }, token)
+  }
+
+  return result
 }
