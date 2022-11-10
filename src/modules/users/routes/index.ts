@@ -1,7 +1,11 @@
 import { Router } from 'express'
 import { isAuthenticated } from '../../../common'
 import * as UserController from '../controllers'
-import { userCreationValidator, userUpdateValidator } from '../middleware'
+import {
+  userCreationValidator,
+  userUpdateValidator,
+  passwordUpdateValidator,
+} from '../middleware'
 
 const router = Router()
 
@@ -22,6 +26,13 @@ router.patch(
   isAuthenticated,
   userUpdateValidator,
   UserController.updateUser,
+)
+
+router.patch(
+  '/change-password',
+  isAuthenticated,
+  passwordUpdateValidator,
+  UserController.changePassword,
 )
 
 router.delete('/', isAuthenticated, UserController.deleteUser)

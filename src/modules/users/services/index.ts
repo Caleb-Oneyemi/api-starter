@@ -14,7 +14,7 @@ import {
   validateToken,
   NotFoundError,
   BadRequestError,
-  RequestUser,
+  verifyPassword,
 } from '../../../common'
 
 const getMailVerificationToken = (customId: string, salt: string) => {
@@ -80,16 +80,12 @@ export const resendAccountVerification = async (customId: string) => {
 }
 
 export const updateUser = async (
+  customId: string,
   input: Partial<
     Pick<AppUserAttributes, 'firstName' | 'lastName' | 'email' | 'phoneNumber'>
   >,
-  user?: RequestUser,
 ) => {
-  if (!user) {
-    return null
-  }
-
-  const result = await UserDAL.updateAppUser({ customId: user.customId }, input)
+  const result = await UserDAL.updateAppUser({ customId }, input)
 
   if (input.email && result != null) {
     const { customId, salt, firstName, email } = result
@@ -99,6 +95,39 @@ export const updateUser = async (
   }
 
   return result
+}
+
+interface ChangePasswordInput {
+  oldPassword: string
+  newPassword: string
+  confirmedNewPassword: string
+}
+
+export const changeUserPassword = async (
+  customId: string,
+  input: ChangePasswordInput,
+) => {
+  const { oldPassword, newPassword, confirmedNewPassword } = input
+  const user = await UserDAL.getAppUserByCustomId(customId)
+  if (!user) {
+    return null
+  }
+
+  const isPasswordValid = await verifyPassword(oldPassword, user.password)
+  if (!isPasswordValid) {
+    throw new BadRequestError('wrong old password')
+  }
+
+  if (oldPassword === newPassword) {
+    throw new BadRequestError('old and new password must not be the same')
+  }
+
+  if (confirmedNewPassword !== newPassword) {
+    throw new BadRequestError('confirmed password must match new password')
+  }
+
+  const password = await hashPassword(newPassword)
+  return UserDAL.updateAppUser({ customId }, { password })
 }
 
 export const deleteUser = async (customId: string) => {

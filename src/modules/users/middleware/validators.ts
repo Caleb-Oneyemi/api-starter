@@ -69,16 +69,6 @@ export const passwordUpdateValidator = async (
 ): Promise<void> => {
   try {
     await passwordUpdateSchema.parseAsync(req.body)
-    const { oldPassword, newPassword, confirmedNewPassword } = req.body
-
-    if (oldPassword === newPassword) {
-      throw new BadRequestError('old and new password must not be the same')
-    }
-
-    if (confirmedNewPassword !== newPassword) {
-      throw new BadRequestError('confirmed password must match new password')
-    }
-
     next()
   } catch (err) {
     if (err instanceof ZodError) {

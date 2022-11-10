@@ -28,11 +28,21 @@ export const getUser = controllerWrapper(
 export const updateUser = controllerWrapper(
   httpStatus.OK,
   async ({ user, input }): Promise<ResponseData> => {
-    const result = await UserService.updateUser(input, user)
+    const result = await UserService.updateUser(user?.customId as string, input)
     return result
   },
 )
 
+export const changePassword = controllerWrapper(
+  httpStatus.OK,
+  async ({ user, input }): Promise<ResponseData> => {
+    const result = await UserService.changeUserPassword(
+      user?.customId as string,
+      input,
+    )
+    return result
+  },
+)
 export const verifyAccount = controllerWrapper(
   httpStatus.OK,
   async ({ params }): Promise<ResponseData> => {
