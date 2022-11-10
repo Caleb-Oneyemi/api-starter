@@ -17,7 +17,7 @@ import {
   RequestUser,
 } from '../../../common'
 
-const getMailToken = (customId: string, salt: string) => {
+const getMailVerificationToken = (customId: string, salt: string) => {
   const expires = 60 * 60 * 48
   const token = generateToken({ id: customId }, salt, expires)
   return token
@@ -38,7 +38,7 @@ export const createUser = async (input: AppUserAttributes) => {
   }
 
   const result = await UserDAL.createAppUser(data)
-  const token = getMailToken(customId, salt)
+  const token = getMailVerificationToken(customId, salt)
 
   await sendRegistrationMail(
     { firstName: data.firstName, email: data.email },
@@ -82,7 +82,7 @@ export const updateUser = async (
 
   if (input.email && result != null) {
     const { customId, salt, firstName, email } = result
-    const token = getMailToken(customId, salt)
+    const token = getMailVerificationToken(customId, salt)
 
     await sendEmailVerificationMail({ firstName, email }, token)
   }
