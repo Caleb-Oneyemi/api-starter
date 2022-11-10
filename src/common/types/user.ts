@@ -12,7 +12,6 @@ export interface AppUserAttributes extends UserAttributes {
   email: string
   phoneNumber?: string
   photoUrl?: string
-  deleted?: boolean
   deletedAt?: Date
   confirmed?: boolean
 }

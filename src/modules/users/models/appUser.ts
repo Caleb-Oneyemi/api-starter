@@ -45,10 +45,6 @@ const appUserSchema = new Schema<AppUserAttributes, AppUserModel>({
     type: String,
     validate: [validator.isURL],
   },
-  deleted: {
-    type: Boolean,
-    default: false,
-  },
   deletedAt: {
     type: Date,
     default: null,

@@ -40,3 +40,11 @@ export const verifyAccount = controllerWrapper(
     return null
   },
 )
+
+export const deleteUser = controllerWrapper(
+  httpStatus.OK,
+  async ({ user }): Promise<ResponseData> => {
+    await UserService.deleteUser(user?.customId as string)
+    return null
+  },
+)
