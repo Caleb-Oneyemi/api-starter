@@ -15,7 +15,7 @@ export const controllerWrapper = (status: number, fn: ControllerFunction) => {
 
       res.status(status).send({
         isSuccess: true,
-        data,
+        data: data ? data : null,
       })
     } catch (err) {
       next(err)

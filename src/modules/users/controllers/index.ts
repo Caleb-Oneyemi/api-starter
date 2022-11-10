@@ -37,7 +37,13 @@ export const verifyAccount = controllerWrapper(
   httpStatus.OK,
   async ({ params }): Promise<ResponseData> => {
     await UserService.verifyAccount(params.token)
-    return null
+  },
+)
+
+export const resendAccountVerification = controllerWrapper(
+  httpStatus.OK,
+  async ({ user }): Promise<ResponseData> => {
+    await UserService.resendAccountVerification(user?.customId as string)
   },
 )
 
@@ -45,6 +51,5 @@ export const deleteUser = controllerWrapper(
   httpStatus.OK,
   async ({ user }): Promise<ResponseData> => {
     await UserService.deleteUser(user?.customId as string)
-    return null
   },
 )

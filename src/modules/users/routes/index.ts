@@ -9,6 +9,12 @@ router.post('/', userCreationValidator, UserController.createUser)
 
 router.get('/verify/:token', UserController.verifyAccount)
 
+router.post(
+  '/resend/account-verification',
+  isAuthenticated,
+  UserController.resendAccountVerification,
+)
+
 router.get('/', isAuthenticated, UserController.getUser)
 
 router.patch(

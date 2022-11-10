@@ -68,6 +68,17 @@ export const verifyAccount = async (token: string) => {
   await UserDAL.updateAppUser({ customId: id }, { confirmed: true })
 }
 
+export const resendAccountVerification = async (customId: string) => {
+  const user = await UserDAL.getAppUserByCustomId(customId)
+  if (!user) {
+    return null
+  }
+
+  const { salt, firstName, email } = user
+  const token = getMailVerificationToken(customId, salt)
+  await sendRegistrationMail({ firstName, email }, token)
+}
+
 export const updateUser = async (
   input: Partial<
     Pick<AppUserAttributes, 'firstName' | 'lastName' | 'email' | 'phoneNumber'>
