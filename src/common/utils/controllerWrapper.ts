@@ -5,7 +5,9 @@ export const controllerWrapper = (status: number, fn: ControllerFunction) => {
   return async (req: Request, res: CustomResponse, next: NextFunction) => {
     if (typeof fn !== 'function') {
       throw new Error(
-        `Expected type of input to controllerWrapper function to be a function instead got ${typeof fn}`,
+        `Expected type of input to controllerWrapper function to be a function instead got ${typeof fn} for ${
+          req.method
+        } request to ${req.originalUrl}`,
       )
     }
 
