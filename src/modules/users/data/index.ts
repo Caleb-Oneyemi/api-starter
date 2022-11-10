@@ -30,16 +30,6 @@ export const updateAppUser = async (
   return AppUser.findOneAndUpdate(filter, { $set: input }, { new: true })
 }
 
-export const softDeleteAppUser = async (filter: Filter) => {
-  return AppUser.findOneAndUpdate(filter, {
-    $set: { deleted: true, deletedAt: new Date() },
-  })
-}
-
-export const hardDeleteAppUser = async (filter: Filter) => {
-  return AppUser.findOneAndRemove(filter)
-}
-
 export const createAdminUser = async (input: AdminUserAttributes) => {
   return AdminUser.build(input)
 }

@@ -4,7 +4,7 @@ import { promisify } from 'util'
 const scrypt = promisify(crypto.scrypt)
 
 export const hashPassword = async (password: string): Promise<string> => {
-  const salt = crypto.randomBytes(8).toString('hex')
+  const salt = crypto.randomBytes(16).toString('hex')
   const hash = (await scrypt(password, salt, 64)) as Buffer
   return salt + ':' + hash.toString('hex')
 }

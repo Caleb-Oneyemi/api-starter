@@ -18,7 +18,7 @@ export const createUser = async (input: AppUserAttributes) => {
     hashPassword(input.password),
     generateCustomId(),
   ])
-  const salt = generateSalt(24)
+  const salt = generateSalt(12)
 
   const data = {
     ...input,

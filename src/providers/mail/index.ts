@@ -6,7 +6,7 @@ import { MailInput, RegistrationMailInput } from './types'
 
 sgMail.setApiKey(config.get('sendgridApiKey'))
 
-export const sendMail = async (input: MailInput) => {
+const sendMail = async (input: MailInput) => {
   const { to, subject, html } = input
 
   const from: string = config.get('sendgridSender')

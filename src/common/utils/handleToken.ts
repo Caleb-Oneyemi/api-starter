@@ -4,6 +4,7 @@ interface Payload {
   id: string
 }
 
+/** Default expiry is 7 days */
 export const generateToken = (
   { id }: Payload,
   salt: string,
