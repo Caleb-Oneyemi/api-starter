@@ -73,3 +73,10 @@ export const deleteUser = controllerWrapper(
     await UserService.deleteUser(user?.customId as string)
   },
 )
+
+export const forgotPassword = controllerWrapper(
+  httpStatus.OK,
+  async ({ input }): Promise<ResponseData> => {
+    await UserService.handleForgotPassword(input.email)
+  },
+)

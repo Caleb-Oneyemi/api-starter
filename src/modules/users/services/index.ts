@@ -3,6 +3,7 @@ import * as UserDAL from '../data'
 import {
   sendRegistrationMail,
   sendEmailVerificationMail,
+  sendPasswordResetMail,
 } from '../../../providers'
 import {
   hashPassword,
@@ -19,7 +20,7 @@ import {
 
 const getMailVerificationToken = (customId: string, salt: string) => {
   const expires = 60 * 60 * 48
-  const token = generateToken({ id: customId }, salt, expires)
+  const token = generateToken({ id: customId }, { salt, expires })
   return token
 }
 
@@ -63,7 +64,10 @@ export const loginUser = async (
     throw new BadRequestError('invalid credentials')
   }
 
-  const token = generateToken({ id: existingUser.customId }, existingUser.salt)
+  const token = generateToken(
+    { id: existingUser.customId },
+    { salt: existingUser.salt },
+  )
   return { user: existingUser, token }
 }
 
@@ -91,7 +95,7 @@ export const verifyAccount = async (token: string) => {
 export const resendAccountVerification = async (customId: string) => {
   const user = await UserDAL.getAppUserByCustomId(customId)
   if (!user) {
-    return null
+    throw new NotFoundError('user not found')
   }
 
   const { salt, firstName, email } = user
@@ -130,7 +134,7 @@ export const changeUserPassword = async (
   const { oldPassword, newPassword, confirmedNewPassword } = input
   const user = await UserDAL.getAppUserByCustomId(customId)
   if (!user) {
-    return null
+    throw new NotFoundError('user not found')
   }
 
   const isPasswordValid = await verifyPassword(oldPassword, user.password)
@@ -161,4 +165,19 @@ export const deleteUser = async (customId: string) => {
   )
 
   if (!result) throw new NotFoundError('user not found')
+}
+
+export const handleForgotPassword = async (email: string) => {
+  const user = await UserDAL.getAppUserByEmail(email)
+  if (!user) {
+    return null
+  }
+
+  const expires = 60 * 60 * 24
+  const token = generateToken(
+    { id: user.customId },
+    { salt: user.salt, expires },
+  )
+
+  await sendPasswordResetMail({ firstName: user.firstName, email }, token)
 }

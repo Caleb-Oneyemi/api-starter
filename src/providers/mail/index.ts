@@ -36,3 +36,20 @@ export const sendEmailVerificationMail = async (
 
   await sendMail({ to: email, subject, html })
 }
+
+export const sendPasswordResetMail = async (
+  { firstName, email }: NewMailInput,
+  token: string,
+) => {
+  const subject = 'Password Reset'
+  const url = `${config.get('appUrl')}/reset-password/${token}`
+
+  const html = await renderTemplate({
+    greetingText: `Hi ${firstName}`,
+    body: 'Tap the button below to initiate password reset',
+    buttonText: 'Reset',
+    url,
+  })
+
+  await sendMail({ to: email, subject, html })
+}

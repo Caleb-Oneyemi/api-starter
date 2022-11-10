@@ -61,3 +61,9 @@ export const loginUserSchema = z
     password: z.string(),
   })
   .strict()
+
+export const forgotPasswordSchema = z
+  .object({
+    email: z.string().email(),
+  })
+  .strict()

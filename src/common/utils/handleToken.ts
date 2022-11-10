@@ -4,11 +4,15 @@ interface Payload {
   id: string
 }
 
+interface TokenOptions {
+  salt: string
+  expires?: number
+}
+
 /** Default expiry is 7 days */
 export const generateToken = (
   { id }: Payload,
-  salt: string,
-  expires?: number,
+  { salt, expires }: TokenOptions,
 ): string => {
   const signature: string = config.get('jwtSecret') + salt
   const expiresIn = expires ? expires : '7d'
