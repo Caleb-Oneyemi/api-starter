@@ -15,7 +15,7 @@ export const isAuthenticated = async (
   }
 
   const payload = decodeToken(token)
-  const user = await getUserByCustomId(payload.customId)
+  const user = await getUserByCustomId(payload.id)
   if (!user) {
     return next(new NotFoundError('user not found'))
   }

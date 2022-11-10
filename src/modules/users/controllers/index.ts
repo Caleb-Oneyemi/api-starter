@@ -13,7 +13,7 @@ export const createUser = controllerWrapper(
     input,
   }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
     const result = await UserService.createUser(input)
-    return { ...result.toJSON() }
+    return result
   },
 )
 

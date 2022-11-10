@@ -18,7 +18,7 @@ app.use(
   }),
 )
 
-app.use('/api', ApiRouter)
+app.use('/', ApiRouter)
 
 app.all('*', (req, res, next) => {
   next(new NotFoundError('route not found'))
