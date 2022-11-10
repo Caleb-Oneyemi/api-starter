@@ -5,6 +5,7 @@ import {
   ControllerInput,
   controllerWrapper,
   AppUserAttributes,
+  RequestUser,
 } from '../../../common'
 
 export const createUser = controllerWrapper(
@@ -14,6 +15,13 @@ export const createUser = controllerWrapper(
   }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
     const result = await UserService.createUser(input)
     return result
+  },
+)
+
+export const getUser = controllerWrapper(
+  httpStatus.OK,
+  async ({ user }): Promise<ResponseData> => {
+    return user as RequestUser
   },
 )
 
