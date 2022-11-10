@@ -10,6 +10,7 @@ import {
   passwordUpdateSchema,
   loginUserSchema,
   forgotPasswordSchema,
+  resetPasswordSchema,
 } from './schemas'
 
 export const userCreationValidator = middlewareWrapper(
@@ -60,5 +61,11 @@ export const passwordUpdateValidator = middlewareWrapper(
 export const forgotPasswordValidator = middlewareWrapper(
   async ({ input }): Promise<void> => {
     await forgotPasswordSchema.parseAsync(input)
+  },
+)
+
+export const resetPasswordValidator = middlewareWrapper(
+  async ({ input }): Promise<void> => {
+    await resetPasswordSchema.parseAsync(input)
   },
 )

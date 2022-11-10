@@ -7,6 +7,7 @@ import {
   passwordUpdateValidator,
   loginUserValidator,
   forgotPasswordValidator,
+  resetPasswordValidator,
 } from '../middleware'
 
 import {
@@ -19,6 +20,7 @@ import {
   resendAccountVerification,
   changePassword,
   forgotPassword,
+  resetPassword,
 } from '../controllers'
 
 const router = Router()
@@ -42,5 +44,6 @@ router
     changePassword,
   )
   .post('/forgot-password', forgotPasswordValidator, forgotPassword)
+  .post('/reset-password', resetPasswordValidator, resetPassword)
 
 export { router as userRoutes }

@@ -67,3 +67,21 @@ export const forgotPasswordSchema = z
     email: z.string().email(),
   })
   .strict()
+
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().trim(),
+    newPassword: z
+      .string()
+      .trim()
+      .min(8)
+      .max(50)
+      .refine(validatePassword, { message: passwordValidationMsg }),
+    confirmedNewPassword: z
+      .string()
+      .trim()
+      .min(8)
+      .max(50)
+      .refine(validatePassword, { message: passwordValidationMsg }),
+  })
+  .strict()

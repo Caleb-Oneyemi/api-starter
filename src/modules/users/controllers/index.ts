@@ -80,3 +80,10 @@ export const forgotPassword = controllerWrapper(
     await UserService.handleForgotPassword(input.email)
   },
 )
+
+export const resetPassword = controllerWrapper(
+  httpStatus.OK,
+  async ({ input }): Promise<ResponseData> => {
+    await UserService.handleResetPassword(input)
+  },
+)

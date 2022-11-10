@@ -24,6 +24,18 @@ const getMailVerificationToken = (customId: string, salt: string) => {
   return token
 }
 
+const handleTokenValidation = (token: string, salt: string) => {
+  try {
+    validateToken(token, salt)
+  } catch (err) {
+    if (err instanceof TokenExpiredError) {
+      throw new BadRequestError('Token Expired')
+    }
+
+    throw new BadRequestError('Invalid Token')
+  }
+}
+
 export const createUser = async (input: AppUserAttributes) => {
   const [password, customId] = await Promise.all([
     hashPassword(input.password),
@@ -80,7 +92,7 @@ export const verifyAccount = async (token: string) => {
   }
 
   try {
-    validateToken(token, user.salt)
+    handleTokenValidation(token, user.salt)
   } catch (err) {
     if (err instanceof TokenExpiredError) {
       throw new BadRequestError('Token Expired')
@@ -180,4 +192,25 @@ export const handleForgotPassword = async (email: string) => {
   )
 
   await sendPasswordResetMail({ firstName: user.firstName, email }, token)
+}
+
+type ResetPasswordInput = Omit<ChangePasswordInput, 'oldPassword'> & {
+  token: string
+}
+
+export const handleResetPassword = async (input: ResetPasswordInput) => {
+  const { token, newPassword, confirmedNewPassword } = input
+  if (confirmedNewPassword !== newPassword) {
+    throw new BadRequestError('confirmed password must match new password')
+  }
+
+  const { id } = decodeToken(token)
+  const user = await UserDAL.getAppUserByCustomId(id)
+  if (!user) {
+    throw new BadRequestError('user not found')
+  }
+
+  handleTokenValidation(token, user.salt)
+  const password = await hashPassword(newPassword)
+  return UserDAL.updateAppUser({ customId: id }, { password })
 }
