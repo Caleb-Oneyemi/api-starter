@@ -14,6 +14,7 @@ export interface AppUserAttributes extends UserAttributes {
   photoUrl?: string
   deletedAt?: Date
   confirmed?: boolean
+  previousResetPasswordToken?: string
 }
 
 export interface AppUserDoc extends AppUserAttributes, Document {

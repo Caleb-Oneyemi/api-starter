@@ -210,7 +210,14 @@ export const handleResetPassword = async (input: ResetPasswordInput) => {
     throw new BadRequestError('user not found')
   }
 
+  if (user.previousResetPasswordToken === token) {
+    throw new BadRequestError('reset link expired')
+  }
+
   handleTokenValidation(token, user.salt)
   const password = await hashPassword(newPassword)
-  return UserDAL.updateAppUser({ customId: id }, { password })
+  return UserDAL.updateAppUser(
+    { customId: id },
+    { password, previousResetPasswordToken: token },
+  )
 }
