@@ -68,7 +68,7 @@ export const resendAccountVerification = controllerWrapper(
 )
 
 export const deleteUser = controllerWrapper(
-  httpStatus.OK,
+  httpStatus.NO_CONTENT,
   async ({ user }): Promise<ResponseData> => {
     await UserService.deleteUser(user?.customId as string)
   },
