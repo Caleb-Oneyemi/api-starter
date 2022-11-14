@@ -1,10 +1,12 @@
 import { TokenExpiredError } from 'jsonwebtoken'
 import * as UserDAL from '../data'
+
 import {
   sendRegistrationMail,
   sendEmailVerificationMail,
   sendPasswordResetMail,
 } from '../../../providers'
+
 import {
   hashPassword,
   AppUserAttributes,
@@ -91,16 +93,7 @@ export const verifyAccount = async (token: string) => {
     throw new NotFoundError('user not found')
   }
 
-  try {
-    handleTokenValidation(token, user.salt)
-  } catch (err) {
-    if (err instanceof TokenExpiredError) {
-      throw new BadRequestError('Token Expired')
-    }
-
-    throw new BadRequestError('Invalid Token')
-  }
-
+  handleTokenValidation(token, user.salt)
   await UserDAL.updateAppUser({ customId: id }, { confirmed: true })
 }
 
@@ -200,12 +193,14 @@ type ResetPasswordInput = Omit<ChangePasswordInput, 'oldPassword'> & {
 
 export const handleResetPassword = async (input: ResetPasswordInput) => {
   const { token, newPassword, confirmedNewPassword } = input
+
   if (confirmedNewPassword !== newPassword) {
     throw new BadRequestError('confirmed password must match new password')
   }
 
   const { id } = decodeToken(token)
   const user = await UserDAL.getAppUserByCustomId(id)
+
   if (!user) {
     throw new BadRequestError('user not found')
   }
@@ -215,6 +210,7 @@ export const handleResetPassword = async (input: ResetPasswordInput) => {
   }
 
   handleTokenValidation(token, user.salt)
+
   const password = await hashPassword(newPassword)
   return UserDAL.updateAppUser(
     { customId: id },

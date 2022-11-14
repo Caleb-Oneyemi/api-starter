@@ -7,6 +7,7 @@ export interface UserAttributes {
 }
 
 export interface AppUserAttributes extends UserAttributes {
+  type?: 'APP_USER'
   firstName: string
   lastName: string
   email: string
@@ -32,10 +33,14 @@ export type Filter =
   | Record<'id', string>
   | Record<'customId', string>
 
-export type RequestUser = Omit<AppUserDoc | AdminUserDoc, 'password' | 'salt'> &
+export type RequestUser = Omit<
+  AppUserDoc | AdminUserDoc,
+  'password' | 'salt' | 'previousResetPasswordToken'
+> &
   Partial<Pick<AppUserDoc | AdminUserDoc, 'password' | 'salt'>>
 
 export interface AdminUserAttributes extends UserAttributes {
+  type?: 'ADMIN_USER'
   username: string
 }
 

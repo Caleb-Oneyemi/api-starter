@@ -1,5 +1,5 @@
 import { ResponseData } from './responses'
-import { RequestUser } from '../types'
+import { RequestUser } from './user'
 
 /**
  T represents the type expected in the request body while

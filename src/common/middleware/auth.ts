@@ -30,8 +30,13 @@ export const isAuthenticated = async (
     return next(new NotAuthenticatedError('Invalid Token'))
   }
 
+  if (user.type === 'APP_USER') {
+    user.previousResetPasswordToken = undefined
+  }
+
   req.user = user
   req.user.password = undefined
   req.user.salt = undefined
+
   next()
 }
