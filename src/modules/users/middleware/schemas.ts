@@ -4,12 +4,24 @@ import {
   validatePhone,
   passwordValidationMsg,
   phoneValidationMsg,
+  isAlphabet,
+  alphabetMsg,
 } from './customSchemaValidators'
 
 export const userCreationSchema = z
   .object({
-    firstName: z.string().trim().min(2).max(50),
-    lastName: z.string().trim().min(2).max(50),
+    firstName: z
+      .string()
+      .trim()
+      .min(2)
+      .max(50)
+      .refine(isAlphabet, { message: alphabetMsg }),
+    lastName: z
+      .string()
+      .trim()
+      .min(2)
+      .max(50)
+      .refine(isAlphabet, { message: alphabetMsg }),
     email: z.string().trim().email(),
     phoneNumber: z
       .string()
@@ -24,18 +36,18 @@ export const userCreationSchema = z
   })
   .strict()
 
-export const userUpdateSchema = z
-  .object({
-    firstName: z.string().min(2).max(50).optional(),
-    lastName: z.string().min(2).max(50).optional(),
-    email: z.string().email().optional(),
-    phoneNumber: z
-      .string()
-      .trim()
-      .refine(validatePhone, { message: phoneValidationMsg })
-      .optional(),
-  })
-  .strict()
+export const userUpdateSchema = userCreationSchema
+  .omit({ password: true })
+  .partial()
+  .refine(
+    ({ firstName, lastName, email, phoneNumber }) => {
+      if (!firstName && !lastName && !email && !phoneNumber) return false
+      return true
+    },
+    {
+      message: 'update must contain at least one property',
+    },
+  )
 
 export const passwordUpdateSchema = z
   .object({
