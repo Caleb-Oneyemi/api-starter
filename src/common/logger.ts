@@ -1,18 +1,21 @@
 import { createLogger, format, transports } from 'winston'
 
+const { combine, colorize, timestamp, printf } = format
+
 export const logger = createLogger({
   level: 'debug',
-  format: format.combine(
-    format.colorize(),
-    format.timestamp({
+  format: combine(
+    colorize(),
+    timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     }),
-    format.printf(
-      (info) =>
-        `[api_service: ${info.timestamp as string}] ${info.level}: ${
-          info.message
-        }`,
-    ),
+    printf(({ timestamp, level, message, stack }) => {
+      if (stack) {
+        return `[api_service: ${timestamp} ${level}: ${stack}`
+      }
+
+      return `[api_service: ${timestamp as string}] ${level}: ${message}`
+    }),
   ),
   transports: [new transports.Console()],
 })
