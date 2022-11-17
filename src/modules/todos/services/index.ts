@@ -13,8 +13,8 @@ export const createTodo = async (input: TodoAttributes) => {
 }
 
 export const getAllTodos = async ({
-  page,
-  limit,
+  page = 1,
+  limit = 10,
   search,
 }: Omit<TodoQueryInput, 'owner'>) => {
   const todos = await TodoDAL.getAllTodos(page, limit, search)
@@ -22,15 +22,15 @@ export const getAllTodos = async ({
 
   return {
     todos,
-    currentPage: page || 1,
-    totalPages: Math.ceil(count / 10),
+    currentPage: page,
+    totalPages: Math.ceil(count / limit),
   }
 }
 
 export const getUserTodos = async ({
   owner,
-  page,
-  limit,
+  page = 1,
+  limit = 10,
   search,
 }: TodoQueryInput) => {
   const todos = await TodoDAL.getUserTodos(owner, page, limit, search)
@@ -38,8 +38,8 @@ export const getUserTodos = async ({
 
   return {
     todos,
-    currentPage: page || 1,
-    totalPages: Math.ceil(count / 10),
+    currentPage: page,
+    totalPages: Math.ceil(count / limit),
   }
 }
 
