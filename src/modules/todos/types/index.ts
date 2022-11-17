@@ -20,6 +20,11 @@ export interface TodoModel extends Model<TodoDoc> {
   build(input: TodoAttributes): TodoDoc
 }
 
+export type CreateTodoInput = Pick<
+  TodoAttributes,
+  'task' | 'owner' | 'description'
+> & { dueDate: string }
+
 export interface TodoQueryInput {
   page?: number
   limit?: number

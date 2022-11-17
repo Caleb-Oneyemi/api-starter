@@ -7,7 +7,6 @@ const todoSchema = new Schema<TodoAttributes>(
     customId: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     task: {
@@ -37,6 +36,7 @@ const todoSchema = new Schema<TodoAttributes>(
   },
 )
 
+todoSchema.index({ customId: 1, owner: 1 }, { unique: true })
 todoSchema.index({ task: 1, owner: 1 }, { unique: true })
 todoSchema.index({ task: 1, description: 1 })
 

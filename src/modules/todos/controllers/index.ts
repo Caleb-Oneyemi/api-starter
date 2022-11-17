@@ -1,6 +1,6 @@
 import httpStatus from 'http-status'
 import * as TodoService from '../services'
-import { TodoAttributes, TodoQueryInput, UpdateTodoInput } from '../types'
+import { CreateTodoInput, TodoQueryInput, UpdateTodoInput } from '../types'
 
 import {
   ResponseData,
@@ -10,8 +10,12 @@ import {
 
 export const createTodo = controllerWrapper(
   httpStatus.CREATED,
-  async ({ input }: ControllerInput<TodoAttributes>): Promise<ResponseData> => {
-    return TodoService.createTodo(input)
+  async ({
+    input,
+    user,
+  }: ControllerInput<CreateTodoInput>): Promise<ResponseData> => {
+    const owner = user?.id as string
+    return TodoService.createTodo({ ...input, owner })
   },
 )
 
@@ -24,16 +28,13 @@ export const getAllTodos = controllerWrapper(
   },
 )
 
-type GetUserTodosInput = ControllerInput<
-  {},
-  { ownerId: string },
-  TodoQueryInput
->
+type GetUserTodosInput = ControllerInput<{}, {}, TodoQueryInput>
 
 export const getUserTodos = controllerWrapper(
   httpStatus.OK,
-  async ({ params, query }: GetUserTodosInput): Promise<ResponseData> => {
-    return TodoService.getUserTodos({ ...query, owner: params.ownerId })
+  async ({ user, query }: GetUserTodosInput): Promise<ResponseData> => {
+    const owner = user?.id as string
+    return TodoService.getUserTodos({ ...query, owner })
   },
 )
 
@@ -58,14 +59,14 @@ export const getTodoByCustomId = controllerWrapper(
 type UpdateTodoData = ControllerInput<UpdateTodoInput, { customId: string }>
 
 export const updateTodo = controllerWrapper(
-  httpStatus.CREATED,
+  httpStatus.OK,
   async ({ input, params }: UpdateTodoData): Promise<ResponseData> => {
     return TodoService.updateTodo(params.customId, input)
   },
 )
 
 export const deleteTodo = controllerWrapper(
-  httpStatus.CREATED,
+  httpStatus.NO_CONTENT,
   async ({
     params,
   }: ControllerInput<{}, { customId: string }>): Promise<ResponseData> => {

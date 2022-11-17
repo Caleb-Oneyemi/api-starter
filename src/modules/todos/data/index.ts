@@ -20,7 +20,7 @@ export const getAllTodos = ({
   return Todo.find(filter)
     .sort({ createdAt: sort })
     .limit(limit)
-    .skip((page - 1) * 10)
+    .skip((page - 1) * limit)
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
@@ -39,7 +39,7 @@ export const getUserTodos = ({
   return Todo.find(filter)
     .sort({ createdAt: sort })
     .limit(limit)
-    .skip((page - 1) * 10)
+    .skip((page - 1) * limit)
 }
 
 export const getTodoById = (id: string) => {
