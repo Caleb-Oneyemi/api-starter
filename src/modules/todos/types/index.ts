@@ -24,6 +24,7 @@ export interface TodoQueryInput {
   page?: number
   limit?: number
   search?: string
+  sort?: 'asc' | 'desc'
 }
 
 export type UserTodoQueryInput = TodoQueryInput & { owner: string }

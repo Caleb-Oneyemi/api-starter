@@ -1,37 +1,43 @@
 import { Todo } from '../models'
-import { TodoAttributes } from '../types'
+import { TodoAttributes, TodoQueryInput, UserTodoQueryInput } from '../types'
 
 export const createTodo = (input: TodoAttributes) => {
   return Todo.build(input)
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
-export const getAllTodos = (page = 1, limit = 10, search?: string) => {
+export const getAllTodos = ({
+  page = 1,
+  limit = 10,
+  sort = 'desc',
+  search,
+}: TodoQueryInput) => {
   const filter = {}
   if (search) {
     Object.assign(filter, { $or: [{ task: search }, { description: search }] })
   }
 
   return Todo.find(filter)
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: sort })
     .limit(limit)
     .skip((page - 1) * 10)
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
-export const getUserTodos = (
-  owner: string,
+export const getUserTodos = ({
+  owner,
   page = 1,
   limit = 10,
-  search?: string,
-) => {
+  sort = 'desc',
+  search,
+}: UserTodoQueryInput) => {
   const filter = { owner }
   if (search) {
     Object.assign(filter, { $or: [{ task: search }, { description: search }] })
   }
 
   return Todo.find(filter)
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: sort })
     .limit(limit)
     .skip((page - 1) * 10)
 }

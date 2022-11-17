@@ -13,9 +13,10 @@ export const createTodo = async (input: TodoAttributes) => {
 export const getAllTodos = async ({
   page = 1,
   limit = 10,
+  sort,
   search,
 }: TodoQueryInput) => {
-  const todos = await TodoDAL.getAllTodos(page, limit, search)
+  const todos = await TodoDAL.getAllTodos({ page, limit, sort, search })
   const count = await TodoDAL.getTotalTodoCount()
 
   return {
@@ -29,9 +30,10 @@ export const getUserTodos = async ({
   owner,
   page = 1,
   limit = 10,
+  sort,
   search,
 }: UserTodoQueryInput) => {
-  const todos = await TodoDAL.getUserTodos(owner, page, limit, search)
+  const todos = await TodoDAL.getUserTodos({ owner, page, limit, sort, search })
   const count = await TodoDAL.getTotalUserTodoCount(owner)
 
   return {
