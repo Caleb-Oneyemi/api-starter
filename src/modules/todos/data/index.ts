@@ -19,9 +19,9 @@ export const getAllTodos = (page = 1, limit = 10, search?: string) => {
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
 export const getUserTodos = (
+  owner: string,
   page = 1,
   limit = 10,
-  owner: string,
   search?: string,
 ) => {
   const filter = { owner }
