@@ -5,16 +5,31 @@ export const createTodo = (input: TodoAttributes) => {
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
-export const getAllTodos = (page = 1, limit = 10) => {
-  return Todo.find({})
+export const getAllTodos = (page = 1, limit = 10, search?: string) => {
+  const filter = {}
+  if (search) {
+    Object.assign(filter, { $or: [{ task: search }, { description: search }] })
+  }
+
+  return Todo.find(filter)
     .sort({ createdAt: -1 })
     .limit(limit)
     .skip((page - 1) * 10)
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
-export const getUserTodos = (owner: string, page = 1, limit = 10) => {
-  return Todo.find({ owner })
+export const getUserTodos = (
+  page = 1,
+  limit = 10,
+  owner: string,
+  search?: string,
+) => {
+  const filter = { owner }
+  if (search) {
+    Object.assign(filter, { $or: [{ task: search }, { description: search }] })
+  }
+
+  return Todo.find(filter)
     .sort({ createdAt: -1 })
     .limit(limit)
     .skip((page - 1) * 10)

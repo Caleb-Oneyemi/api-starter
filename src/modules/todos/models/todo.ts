@@ -13,7 +13,6 @@ const todoSchema = new Schema<TodoAttributes>(
     task: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     description: {
@@ -37,6 +36,9 @@ const todoSchema = new Schema<TodoAttributes>(
     timestamps: true,
   },
 )
+
+todoSchema.index({ task: 1, owner: 1 }, { unique: true })
+todoSchema.index({ task: 1, description: 1 })
 
 todoSchema.statics.build = (input: TodoAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
