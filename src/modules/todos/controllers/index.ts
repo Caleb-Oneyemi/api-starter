@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import httpStatus from 'http-status'
 import * as TodoService from '../services'
 import { TodoAttributes, TodoQueryInput, UpdateTodoInput } from '../types'
