@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { UserTypes } from '../../../common'
-import { TodoAttributes, TodoDoc, TodoModel } from './types'
+import { TodoAttributes, TodoDoc, TodoModel } from '../types'
 
 const todoSchema = new Schema<TodoAttributes>(
   {

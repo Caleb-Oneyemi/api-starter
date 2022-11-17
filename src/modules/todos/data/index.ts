@@ -1,4 +1,5 @@
-import { Todo, TodoAttributes } from '../models'
+import { Todo } from '../models'
+import { TodoAttributes } from '../types'
 
 export const createTodo = (input: TodoAttributes) => {
   return Todo.build(input)

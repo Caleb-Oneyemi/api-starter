@@ -1,12 +1,10 @@
 import * as TodoDAL from '../data'
-import { TodoAttributes } from '../models'
-
-interface TodoQueryInput {
-  page?: number
-  limit?: number
-  search?: string
-  owner: string
-}
+import {
+  TodoAttributes,
+  TodoQueryInput,
+  UserTodoQueryInput,
+  UpdateTodoInput,
+} from '../types'
 
 export const createTodo = async (input: TodoAttributes) => {
   return TodoDAL.createTodo(input)
@@ -16,7 +14,7 @@ export const getAllTodos = async ({
   page = 1,
   limit = 10,
   search,
-}: Omit<TodoQueryInput, 'owner'>) => {
+}: TodoQueryInput) => {
   const todos = await TodoDAL.getAllTodos(page, limit, search)
   const count = await TodoDAL.getTotalTodoCount()
 
@@ -32,7 +30,7 @@ export const getUserTodos = async ({
   page = 1,
   limit = 10,
   search,
-}: TodoQueryInput) => {
+}: UserTodoQueryInput) => {
   const todos = await TodoDAL.getUserTodos(owner, page, limit, search)
   const count = await TodoDAL.getTotalUserTodoCount(owner)
 
@@ -51,10 +49,7 @@ export const getTodoByCustomId = async (customId: string) => {
   return TodoDAL.getTodoByCustomId(customId)
 }
 
-export const updateTodo = async (
-  customId: string,
-  input: Partial<Omit<TodoAttributes, 'owner' | 'customId'>>,
-) => {
+export const updateTodo = async (customId: string, input: UpdateTodoInput) => {
   return TodoDAL.updateTodo(customId, input)
 }
 
