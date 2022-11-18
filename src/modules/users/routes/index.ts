@@ -21,6 +21,7 @@ import {
   changePassword,
   forgotPassword,
   resetPassword,
+  logOut,
 } from '../controllers'
 
 const router = Router()
@@ -45,5 +46,6 @@ router
   )
   .post('/forgot-password', forgotPasswordValidator, forgotPassword)
   .post('/reset-password', resetPasswordValidator, resetPassword)
+  .get('/logout', isAuthenticated, logOut)
 
 export { router as userRoutes }

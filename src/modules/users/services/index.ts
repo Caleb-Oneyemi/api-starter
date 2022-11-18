@@ -207,3 +207,8 @@ export const handleResetPassword = async (input: ResetPasswordInput) => {
     { password, previousResetPasswordToken: token },
   )
 }
+
+export const handleLogout = async (customId: string) => {
+  const salt = generateSalt(12)
+  await UserDAL.updateAppUser({ customId }, { salt })
+}

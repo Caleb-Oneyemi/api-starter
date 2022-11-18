@@ -101,3 +101,11 @@ export const resetPassword = controllerWrapper(
     await UserService.handleResetPassword(input)
   },
 )
+
+export const logOut = controllerWrapper(
+  httpStatus.OK,
+  async ({ user }): Promise<ResponseData> => {
+    await UserService.handleLogout(user?.customId as string)
+    return { message: 'user tokens invalidated' }
+  },
+)
