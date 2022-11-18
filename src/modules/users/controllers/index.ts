@@ -90,6 +90,10 @@ export const forgotPassword = controllerWrapper(
   httpStatus.OK,
   async ({ input }): Promise<ResponseData> => {
     await UserService.handleForgotPassword(input.email)
+    return {
+      message:
+        'A mail will be sent to this email if an account is registered under it',
+    }
   },
 )
 
