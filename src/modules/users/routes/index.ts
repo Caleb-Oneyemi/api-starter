@@ -8,6 +8,7 @@ import {
   loginUserValidator,
   forgotPasswordValidator,
   resetPasswordValidator,
+  loginLimiter,
 } from '../middleware'
 
 import {
@@ -31,7 +32,7 @@ router
   .get('/', isAuthenticated, getUser)
   .patch('/', isAuthenticated, userUpdateValidator, updateUser)
   .delete('/', isAuthenticated, deleteUser)
-  .post('/login', loginUserValidator, loginUser)
+  .post('/login', loginUserValidator, loginLimiter, loginUser)
   .get('/verify/:token', verifyAccount)
   .post(
     '/resend/account-verification',

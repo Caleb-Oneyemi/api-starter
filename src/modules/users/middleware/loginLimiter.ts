@@ -1,25 +1,23 @@
 import { Request, Response, NextFunction } from 'express'
 import { RateLimiterRedis } from 'rate-limiter-flexible'
-import { RateLimitError } from '../errors'
-import { normalizeIPAddress } from '../utils'
-import { client } from '../../redisClient'
+import { client } from '../../../redisClient'
+import { RateLimitError } from '../../../common'
 
 const limiter = new RateLimiterRedis({
   storeClient: client,
-  keyPrefix: 'MIDDLEWARE',
-  points: 10,
-  duration: 1,
+  keyPrefix: 'LOGIN',
+  points: 30,
+  duration: 60 * 60,
   blockDuration: 60 * 60,
 })
 
-export const rateLimiter = async (
+export const loginLimiter = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const ip = normalizeIPAddress(req.ip) || req.ip
-    await limiter.consume(ip)
+    await limiter.consume(req.body.email)
     next()
   } catch (err: any) {
     if (err instanceof Error) {
@@ -28,6 +26,6 @@ export const rateLimiter = async (
 
     const retryAfter = String(Math.round(err.msBeforeNext / 1000) || 1)
     res.setHeader('Retry-After', retryAfter)
-    next(new RateLimitError('request limit exceeded'))
+    next(new RateLimitError('login request limit exceeded'))
   }
 }
