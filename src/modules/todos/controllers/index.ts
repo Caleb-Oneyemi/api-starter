@@ -28,11 +28,12 @@ export const getAllTodos = controllerWrapper(
   },
 )
 
-type GetUserTodosInput = ControllerInput<{}, {}, TodoQueryInput>
-
 export const getUserTodos = controllerWrapper(
   httpStatus.OK,
-  async ({ user, query }: GetUserTodosInput): Promise<ResponseData> => {
+  async ({
+    user,
+    query,
+  }: ControllerInput<{}, {}, TodoQueryInput>): Promise<ResponseData> => {
     const owner = user?.id as string
     return TodoService.getUserTodos({ ...query, owner })
   },

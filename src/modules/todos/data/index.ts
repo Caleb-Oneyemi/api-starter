@@ -1,5 +1,5 @@
 import { Todo } from '../models'
-import { TodoAttributes, TodoQueryInput, UserTodoQueryInput } from '../types'
+import { TodoAttributes, TodoQueryInput } from '../types'
 
 export const createTodo = (input: TodoAttributes) => {
   return Todo.build(input)
@@ -10,13 +10,8 @@ export const getAllTodos = ({
   page = 1,
   limit = 10,
   sort = 'desc',
-  search,
-}: TodoQueryInput) => {
-  const filter = {}
-  if (search) {
-    Object.assign(filter, { $or: [{ task: search }, { description: search }] })
-  }
-
+  filter,
+}: TodoQueryInput & { filter: Record<string, unknown> }) => {
   return Todo.find(filter)
     .sort({ createdAt: sort })
     .limit(limit)
@@ -25,17 +20,11 @@ export const getAllTodos = ({
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
 export const getUserTodos = ({
-  owner,
   page = 1,
   limit = 10,
   sort = 'desc',
-  search,
-}: UserTodoQueryInput) => {
-  const filter = { owner }
-  if (search) {
-    Object.assign(filter, { $or: [{ task: search }, { description: search }] })
-  }
-
+  filter,
+}: TodoQueryInput & { filter: Record<string, unknown> }) => {
   return Todo.find(filter)
     .sort({ createdAt: sort })
     .limit(limit)
@@ -61,10 +50,10 @@ export const deleteTodo = (customId: string) => {
   return Todo.findOneAndDelete({ customId })
 }
 
-export const getTotalTodoCount = () => {
-  return Todo.countDocuments()
+export const getTotalTodoCount = (filter: Record<string, unknown>) => {
+  return Todo.countDocuments(filter)
 }
 
-export const getTotalUserTodoCount = (owner: string) => {
-  return Todo.countDocuments({ owner })
+export const getTotalUserTodoCount = (filter: Record<string, unknown>) => {
+  return Todo.countDocuments(filter)
 }

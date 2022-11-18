@@ -32,8 +32,18 @@ export const getAllTodos = async ({
   sort,
   search,
 }: TodoQueryInput) => {
-  const count = await TodoDAL.getTotalTodoCount()
-  const totalPages = Math.ceil(count / +limit)
+  const filter = {}
+  if (search) {
+    Object.assign(filter, {
+      $or: [
+        { task: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ],
+    })
+  }
+
+  const count = await TodoDAL.getTotalTodoCount(filter)
+  const totalPages = Math.ceil(count / +limit) || 1
   if (+page > totalPages) {
     throw new BadRequestError('page number must be below total pages')
   }
@@ -42,7 +52,7 @@ export const getAllTodos = async ({
     page: +page,
     limit: +limit,
     sort,
-    search,
+    filter,
   })
 
   return {
@@ -60,18 +70,27 @@ export const getUserTodos = async ({
   sort,
   search,
 }: UserTodoQueryInput) => {
-  const count = await TodoDAL.getTotalUserTodoCount(owner)
-  const totalPages = Math.ceil(count / +limit)
+  const filter = { owner }
+  if (search) {
+    Object.assign(filter, {
+      $or: [
+        { task: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ],
+    })
+  }
+
+  const count = await TodoDAL.getTotalUserTodoCount(filter)
+  const totalPages = Math.ceil(count / +limit) || 1
   if (+page > totalPages) {
     throw new BadRequestError('page number must be below total pages')
   }
 
   const todos = await TodoDAL.getUserTodos({
-    owner,
     page: +page,
     limit: +limit,
     sort,
-    search,
+    filter,
   })
 
   return {
