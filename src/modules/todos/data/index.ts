@@ -1,3 +1,4 @@
+import { ClientSession } from 'mongoose'
 import { Todo } from '../models'
 import { TodoAttributes, TodoQueryInput } from '../types'
 
@@ -71,4 +72,8 @@ export const getTotalTodoCount = (filter: Record<string, unknown>) => {
 
 export const getTotalUserTodoCount = (filter: Record<string, unknown>) => {
   return Todo.countDocuments(filter)
+}
+
+export const deleteUserTodos = (ownerId: string, session: ClientSession) => {
+  return Todo.deleteMany({ owner: ownerId }, { session })
 }

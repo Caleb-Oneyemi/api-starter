@@ -1,3 +1,4 @@
+import { ClientSession } from 'mongoose'
 import { AppUser, AdminUser, User } from '../models'
 import {
   Filter,
@@ -46,4 +47,14 @@ export const getUserByCustomId = async (
   customId: string,
 ): Promise<AppUserDoc | AdminUserDoc | null> => {
   return User.findOne({ customId })
+}
+
+export const getUsersToBeDeleted = (date = new Date()) => {
+  return AppUser.find({
+    deletedAt: { $lte: date },
+  }).cursor()
+}
+
+export const hardDeleteUser = (customId: string, session: ClientSession) => {
+  return AppUser.deleteOne({ customId }, { session })
 }
