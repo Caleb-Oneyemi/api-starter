@@ -39,15 +39,6 @@ export const getUserTodos = controllerWrapper(
   },
 )
 
-export const getTodoById = controllerWrapper(
-  httpStatus.OK,
-  async ({
-    params,
-  }: ControllerInput<{}, { id: string }>): Promise<ResponseData> => {
-    return TodoService.getTodoById(params.id)
-  },
-)
-
 export const getTodoByCustomId = controllerWrapper(
   httpStatus.OK,
   async ({

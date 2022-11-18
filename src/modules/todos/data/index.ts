@@ -31,10 +31,6 @@ export const getUserTodos = ({
     .skip((page - 1) * limit)
 }
 
-export const getTodoById = (id: string) => {
-  return Todo.findById(id)
-}
-
 export const getTodoByCustomId = (customId: string) => {
   return Todo.findOne({ customId })
 }
