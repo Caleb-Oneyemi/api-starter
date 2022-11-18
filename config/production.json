@@ -6,5 +6,6 @@
   "adminPassword": "",
   "sendgridApiKey": "",
   "sendgridSender": "",
-  "appUrl": ""
+  "appUrl": "",
+  "redisUrl": ""
 }
