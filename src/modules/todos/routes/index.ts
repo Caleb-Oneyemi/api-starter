@@ -5,6 +5,7 @@ import {
   createTodoValidator,
   getTodosValidator,
   updateTodoValidator,
+  deleteTodoValidator,
 } from '../middleware'
 
 import {
@@ -24,6 +25,6 @@ router
   .get('/by-user', isAuthenticated, getTodosValidator, getUserTodos)
   .patch('/:customId', isAuthenticated, updateTodoValidator, updateTodo)
   .get('/:customId', isAuthenticated, getTodoByCustomId)
-  .delete('/:customId', isAuthenticated, deleteTodo)
+  .delete('/:customId', isAuthenticated, deleteTodoValidator, deleteTodo)
 
 export { router as todoRoutes }

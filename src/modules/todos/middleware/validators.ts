@@ -29,14 +29,12 @@ export const updateTodoValidator = middlewareWrapper(
 )
 
 export const deleteTodoValidator = middlewareWrapper(
-  async ({ input, params, user }): Promise<void> => {
+  async ({ params, user }): Promise<void> => {
     const userId = user?.id as string
     await checkPermissions({
       userId,
       recordId: params.customId,
       getRecord: getTodoByCustomId,
     })
-
-    await updateTodoSchema.parseAsync(input)
   },
 )
