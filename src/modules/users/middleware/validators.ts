@@ -1,9 +1,6 @@
-import {
-  BadRequestError,
-  ConflictError,
-  middlewareWrapper,
-} from '../../../common'
+import { ConflictError, middlewareWrapper } from '../../../common'
 import { getAppUserByEmail, getAppUserByPhone } from '../data'
+
 import {
   userCreationSchema,
   userUpdateSchema,
@@ -32,9 +29,6 @@ export const loginUserValidator = middlewareWrapper(
 
 export const userUpdateValidator = middlewareWrapper(
   async ({ input }): Promise<void> => {
-    if (Object.keys(input).length === 0) {
-      throw new BadRequestError('At least one property must be updated')
-    }
     await userUpdateSchema.parseAsync(input)
 
     const [emailUser, phoneUser] = await Promise.all([

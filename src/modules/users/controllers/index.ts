@@ -1,5 +1,6 @@
 import httpStatus from 'http-status'
 import * as UserService from '../services'
+
 import {
   ResponseData,
   ControllerInput,
@@ -7,6 +8,13 @@ import {
   AppUserAttributes,
   RequestUser,
 } from '../../../common'
+
+import {
+  ChangePasswordInput,
+  LoginUserInput,
+  ResetPasswordInput,
+  UpdateUserInput,
+} from '../types'
 
 export const createUser = controllerWrapper(
   httpStatus.CREATED,
@@ -20,9 +28,7 @@ export const createUser = controllerWrapper(
 
 export const loginUser = controllerWrapper(
   httpStatus.OK,
-  async ({
-    input,
-  }: ControllerInput<AppUserAttributes>): Promise<ResponseData> => {
+  async ({ input }: ControllerInput<LoginUserInput>): Promise<ResponseData> => {
     const result = await UserService.loginUser(input)
     return result
   },
@@ -37,7 +43,10 @@ export const getUser = controllerWrapper(
 
 export const updateUser = controllerWrapper(
   httpStatus.OK,
-  async ({ user, input }): Promise<ResponseData> => {
+  async ({
+    user,
+    input,
+  }: ControllerInput<UpdateUserInput>): Promise<ResponseData> => {
     const result = await UserService.updateUser(user?.customId as string, input)
     return result
   },
@@ -45,7 +54,10 @@ export const updateUser = controllerWrapper(
 
 export const changePassword = controllerWrapper(
   httpStatus.OK,
-  async ({ user, input }): Promise<ResponseData> => {
+  async ({
+    user,
+    input,
+  }: ControllerInput<ChangePasswordInput>): Promise<ResponseData> => {
     const result = await UserService.changeUserPassword(
       user?.customId as string,
       input,
@@ -83,7 +95,9 @@ export const forgotPassword = controllerWrapper(
 
 export const resetPassword = controllerWrapper(
   httpStatus.OK,
-  async ({ input }): Promise<ResponseData> => {
+  async ({
+    input,
+  }: ControllerInput<ResetPasswordInput>): Promise<ResponseData> => {
     await UserService.handleResetPassword(input)
   },
 )

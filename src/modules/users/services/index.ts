@@ -2,6 +2,13 @@ import { TokenExpiredError } from 'jsonwebtoken'
 import * as UserDAL from '../data'
 
 import {
+  UpdateUserInput,
+  LoginUserInput,
+  ChangePasswordInput,
+  ResetPasswordInput,
+} from '../types'
+
+import {
   sendRegistrationMail,
   sendEmailVerificationMail,
   sendPasswordResetMail,
@@ -62,9 +69,7 @@ export const createUser = async (input: AppUserAttributes) => {
   return result
 }
 
-export const loginUser = async (
-  input: Pick<AppUserAttributes, 'email' | 'password'>,
-) => {
+export const loginUser = async (input: LoginUserInput) => {
   const existingUser = await UserDAL.getAppUserByEmail(input.email)
   if (!existingUser) {
     throw new BadRequestError('invalid credentials')
@@ -108,12 +113,7 @@ export const resendAccountVerification = async (customId: string) => {
   await sendRegistrationMail({ firstName, email }, token)
 }
 
-export const updateUser = async (
-  customId: string,
-  input: Partial<
-    Pick<AppUserAttributes, 'firstName' | 'lastName' | 'email' | 'phoneNumber'>
-  >,
-) => {
+export const updateUser = async (customId: string, input: UpdateUserInput) => {
   const result = await UserDAL.updateAppUser({ customId }, input)
 
   if (input.email && result != null) {
@@ -124,12 +124,6 @@ export const updateUser = async (
   }
 
   return result
-}
-
-interface ChangePasswordInput {
-  oldPassword: string
-  newPassword: string
-  confirmedNewPassword: string
 }
 
 export const changeUserPassword = async (
@@ -148,7 +142,7 @@ export const changeUserPassword = async (
   }
 
   if (oldPassword === newPassword) {
-    throw new BadRequestError('old and new password must not be the same')
+    throw new BadRequestError('old and new password must be different')
   }
 
   if (confirmedNewPassword !== newPassword) {
@@ -185,10 +179,6 @@ export const handleForgotPassword = async (email: string) => {
   )
 
   await sendPasswordResetMail({ firstName: user.firstName, email }, token)
-}
-
-type ResetPasswordInput = Omit<ChangePasswordInput, 'oldPassword'> & {
-  token: string
 }
 
 export const handleResetPassword = async (input: ResetPasswordInput) => {

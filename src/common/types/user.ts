@@ -33,11 +33,7 @@ export type Filter =
   | Record<'id', string>
   | Record<'customId', string>
 
-export type RequestUser = Omit<
-  AppUserDoc | AdminUserDoc,
-  'password' | 'salt' | 'previousResetPasswordToken'
-> &
-  Partial<Pick<AppUserDoc | AdminUserDoc, 'password' | 'salt'>>
+export type RequestUser = Partial<AppUserDoc | AdminUserDoc>
 
 export interface AdminUserAttributes extends UserAttributes {
   type?: 'ADMIN_USER'
