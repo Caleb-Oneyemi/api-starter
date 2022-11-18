@@ -14,13 +14,14 @@ export const isAuthenticated = async (
     return next(new NotAuthenticatedError('Not Authenticated'))
   }
 
-  const payload = decodeToken(token)
-  const user = await getUserByCustomId(payload.id)
-  if (!user) {
-    return next(new NotFoundError('user not found'))
-  }
-
+  let user
   try {
+    const payload = decodeToken(token)
+    user = await getUserByCustomId(payload.id)
+    if (!user) {
+      return next(new NotFoundError('user not found'))
+    }
+
     validateToken(token, user.salt)
   } catch (err) {
     if (err instanceof TokenExpiredError) {
