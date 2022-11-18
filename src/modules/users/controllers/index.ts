@@ -58,11 +58,7 @@ export const changePassword = controllerWrapper(
     user,
     input,
   }: ControllerInput<ChangePasswordInput>): Promise<ResponseData> => {
-    const result = await UserService.changeUserPassword(
-      user?.customId as string,
-      input,
-    )
-    return result
+    await UserService.changeUserPassword(user?.customId as string, input)
   },
 )
 export const verifyAccount = controllerWrapper(
