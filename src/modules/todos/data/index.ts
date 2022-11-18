@@ -16,6 +16,10 @@ export const getAllTodos = ({
     .sort({ createdAt: sort })
     .limit(limit)
     .skip((page - 1) * limit)
+    .populate({
+      path: 'owner',
+      select: 'firstName lastName photUrl -_id -type',
+    })
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
@@ -31,8 +35,15 @@ export const getUserTodos = ({
     .skip((page - 1) * limit)
 }
 
-export const getTodoByCustomId = (customId: string) => {
-  return Todo.findOne({ customId })
+export const getTodoByCustomId = async (customId: string, populate = false) => {
+  if (!populate) {
+    return Todo.findOne({ customId })
+  }
+
+  return Todo.findOne({ customId }).populate({
+    path: 'owner',
+    select: 'firstName lastName photUrl -_id -type',
+  })
 }
 
 export const updateTodo = (

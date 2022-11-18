@@ -35,7 +35,7 @@ export const formatMongoError = (
     }
   }
 
-  logger.warn(`MONGO_ERROR --- ${JSON.stringify(err)}`)
+  logger.warn(err)
 
   return {
     status: httpStatus.INTERNAL_SERVER_ERROR,

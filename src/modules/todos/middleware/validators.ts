@@ -1,5 +1,7 @@
 import { createTodoSchema, getTodosSchema, updateTodoSchema } from './schemas'
-import { middlewareWrapper } from '../../../common'
+import { getTodoByCustomId } from '../data'
+import { TodoDoc } from '../types'
+import { middlewareWrapper, checkPermissions } from '../../../common'
 
 export const createTodoValidator = middlewareWrapper(
   async ({ input }): Promise<void> => {
@@ -14,7 +16,27 @@ export const getTodosValidator = middlewareWrapper(
 )
 
 export const updateTodoValidator = middlewareWrapper(
-  async ({ input }): Promise<void> => {
+  async ({ input, params, user }): Promise<void> => {
+    const userId = user?.id as string
+    await checkPermissions<TodoDoc>({
+      userId,
+      recordId: params.customId,
+      getRecord: getTodoByCustomId,
+    })
+
+    await updateTodoSchema.parseAsync(input)
+  },
+)
+
+export const deleteTodoValidator = middlewareWrapper(
+  async ({ input, params, user }): Promise<void> => {
+    const userId = user?.id as string
+    await checkPermissions({
+      userId,
+      recordId: params.customId,
+      getRecord: getTodoByCustomId,
+    })
+
     await updateTodoSchema.parseAsync(input)
   },
 )

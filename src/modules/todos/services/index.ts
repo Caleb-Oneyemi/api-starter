@@ -102,7 +102,7 @@ export const getUserTodos = async ({
 }
 
 export const getTodoByCustomId = async (customId: string) => {
-  const todo = await TodoDAL.getTodoByCustomId(customId)
+  const todo = await TodoDAL.getTodoByCustomId(customId, true)
   if (!todo) throw new NotFoundError('todo record does not exist')
   return todo
 }
