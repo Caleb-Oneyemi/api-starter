@@ -3,7 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
 
-import { errorHandler, NotFoundError } from './common'
+import { errorHandler, rateLimiter, NotFoundError } from './common'
 import { ApiRouter } from './modules'
 
 const app = express()
@@ -17,6 +17,8 @@ app.use(
     extended: true,
   }),
 )
+
+app.use(rateLimiter)
 
 app.use('/', ApiRouter)
 
