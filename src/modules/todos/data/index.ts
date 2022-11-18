@@ -20,6 +20,7 @@ export const getAllTodos = ({
       path: 'owner',
       select: 'firstName lastName photUrl -_id -type',
     })
+    .exec()
 }
 
 /** PAGINATED WITH DEFAULT OF TEN DOCUMENTS PER PAGE */
@@ -33,6 +34,7 @@ export const getUserTodos = ({
     .sort({ createdAt: sort })
     .limit(limit)
     .skip((page - 1) * limit)
+    .exec()
 }
 
 export const getTodoByCustomId = async (customId: string, populate = false) => {
@@ -40,21 +42,27 @@ export const getTodoByCustomId = async (customId: string, populate = false) => {
     return Todo.findOne({ customId })
   }
 
-  return Todo.findOne({ customId }).populate({
-    path: 'owner',
-    select: 'firstName lastName photUrl -_id -type',
-  })
+  return Todo.findOne({ customId })
+    .populate({
+      path: 'owner',
+      select: 'firstName lastName photUrl -_id -type',
+    })
+    .exec()
 }
 
 export const updateTodo = (
   customId: string,
   input: Partial<TodoAttributes>,
 ) => {
-  return Todo.findOneAndUpdate({ customId }, { $set: input }, { new: true })
+  return Todo.findOneAndUpdate(
+    { customId },
+    { $set: input },
+    { new: true },
+  ).exec()
 }
 
 export const deleteTodo = (customId: string) => {
-  return Todo.findOneAndDelete({ customId })
+  return Todo.findOneAndDelete({ customId }).exec()
 }
 
 export const getTotalTodoCount = (filter: Record<string, unknown>) => {

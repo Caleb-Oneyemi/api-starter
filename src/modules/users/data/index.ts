@@ -31,7 +31,7 @@ export const updateAppUser = async (
   filter: Filter,
   input: Partial<AppUserAttributes>,
 ) => {
-  return AppUser.findOneAndUpdate(filter, { $set: input }, { new: true })
+  return AppUser.findOneAndUpdate(filter, { $set: input }, { new: true }).exec()
 }
 
 export const createAdminUser = async (input: AdminUserAttributes) => {
