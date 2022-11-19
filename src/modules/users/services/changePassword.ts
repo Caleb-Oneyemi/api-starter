@@ -10,11 +10,11 @@ import * as UserDAL from '../data'
 import { ChangePasswordInput } from '../types'
 
 export const changeUserPassword = async (
-  customId: string,
+  publicId: string,
   input: ChangePasswordInput,
 ) => {
   const { oldPassword, newPassword, confirmedNewPassword } = input
-  const user = await UserDAL.getAppUserByCustomId(customId)
+  const user = await UserDAL.getAppUserByPublicId(publicId)
   if (!user) {
     throw new NotFoundError('user not found')
   }
@@ -34,5 +34,5 @@ export const changeUserPassword = async (
 
   const salt = generateSalt(12)
   const password = await hashPassword(newPassword)
-  return UserDAL.updateAppUser({ customId }, { password, salt })
+  return UserDAL.updateAppUser({ publicId }, { password, salt })
 }

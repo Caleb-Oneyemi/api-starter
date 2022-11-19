@@ -12,7 +12,7 @@ import {
   createTodo,
   getAllTodos,
   getUserTodos,
-  getTodoByCustomId,
+  getTodoByPublicId,
   updateTodo,
   deleteTodo,
 } from '../controllers'
@@ -23,8 +23,8 @@ router
   .post('/', isAuthenticated, createTodoValidator, createTodo)
   .get('/', isAuthenticated, getTodosValidator, getAllTodos)
   .get('/by-user', isAuthenticated, getTodosValidator, getUserTodos)
-  .patch('/:customId', isAuthenticated, updateTodoValidator, updateTodo)
-  .get('/:customId', isAuthenticated, getTodoByCustomId)
-  .delete('/:customId', isAuthenticated, deleteTodoValidator, deleteTodo)
+  .patch('/:publicId', isAuthenticated, updateTodoValidator, updateTodo)
+  .get('/:publicId', isAuthenticated, getTodoByPublicId)
+  .delete('/:publicId', isAuthenticated, deleteTodoValidator, deleteTodo)
 
 export { router as todoRoutes }

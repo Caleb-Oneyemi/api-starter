@@ -17,7 +17,7 @@ export const loginUser = async (input: LoginUserInput) => {
   }
 
   const token = generateToken(
-    { id: existingUser.customId },
+    { id: existingUser.publicId },
     { salt: existingUser.salt },
   )
   return { user: existingUser, token }

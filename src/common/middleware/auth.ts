@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { TokenExpiredError } from 'jsonwebtoken'
 import { validateToken, decodeToken } from '../utils'
 import { NotAuthenticatedError, NotFoundError } from '../errors'
-import { getUserByCustomId } from '../../modules/users/data'
+import { getUserByPublicId } from '../../modules/users/data'
 
 export const isAuthenticated = async (
   req: Request,
@@ -17,7 +17,7 @@ export const isAuthenticated = async (
   let user
   try {
     const payload = decodeToken(token)
-    user = await getUserByCustomId(payload.id)
+    user = await getUserByPublicId(payload.id)
     if (!user) {
       return next(new NotFoundError('user not found'))
     }

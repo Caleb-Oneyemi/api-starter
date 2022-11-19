@@ -38,12 +38,12 @@ export const getUserTodos = ({
     .exec()
 }
 
-export const getTodoByCustomId = async (customId: string, populate = false) => {
+export const getTodoByPublicId = async (publicId: string, populate = false) => {
   if (!populate) {
-    return Todo.findOne({ customId })
+    return Todo.findOne({ publicId })
   }
 
-  return Todo.findOne({ customId })
+  return Todo.findOne({ publicId })
     .populate({
       path: 'owner',
       select: 'firstName lastName photUrl -_id -type',
@@ -52,18 +52,18 @@ export const getTodoByCustomId = async (customId: string, populate = false) => {
 }
 
 export const updateTodo = (
-  customId: string,
+  publicId: string,
   input: Partial<TodoAttributes>,
 ) => {
   return Todo.findOneAndUpdate(
-    { customId },
+    { publicId },
     { $set: input },
     { new: true },
   ).exec()
 }
 
-export const deleteTodo = (customId: string) => {
-  return Todo.findOneAndDelete({ customId }).exec()
+export const deleteTodo = (publicId: string) => {
+  return Todo.findOneAndDelete({ publicId }).exec()
 }
 
 export const getTotalTodoCount = (filter: Record<string, unknown>) => {

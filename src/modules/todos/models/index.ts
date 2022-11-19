@@ -4,7 +4,7 @@ import { TodoAttributes, TodoDoc, TodoModel } from '../types'
 
 const todoSchema = new Schema<TodoAttributes>(
   {
-    customId: {
+    publicId: {
       type: String,
       required: true,
       trim: true,
@@ -43,7 +43,7 @@ const todoSchema = new Schema<TodoAttributes>(
   },
 )
 
-todoSchema.index({ customId: 1, owner: 1 }, { unique: true })
+todoSchema.index({ publicId: 1, owner: 1 }, { unique: true })
 todoSchema.index({ task: 1, owner: 1 }, { unique: true })
 todoSchema.index({ task: 1, description: 1 })
 

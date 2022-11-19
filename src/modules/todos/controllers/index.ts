@@ -39,21 +39,21 @@ export const getUserTodos = controllerWrapper(
   },
 )
 
-export const getTodoByCustomId = controllerWrapper(
+export const getTodoByPublicId = controllerWrapper(
   httpStatus.OK,
   async ({
     params,
-  }: ControllerInput<{}, { customId: string }>): Promise<ResponseData> => {
-    return TodoService.getTodoByCustomId(params.customId)
+  }: ControllerInput<{}, { publicId: string }>): Promise<ResponseData> => {
+    return TodoService.getTodoByPublicId(params.publicId)
   },
 )
 
-type UpdateTodoData = ControllerInput<UpdateTodoInput, { customId: string }>
+type UpdateTodoData = ControllerInput<UpdateTodoInput, { publicId: string }>
 
 export const updateTodo = controllerWrapper(
   httpStatus.OK,
   async ({ input, params }: UpdateTodoData): Promise<ResponseData> => {
-    return TodoService.updateTodo(params.customId, input)
+    return TodoService.updateTodo(params.publicId, input)
   },
 )
 
@@ -61,7 +61,7 @@ export const deleteTodo = controllerWrapper(
   httpStatus.NO_CONTENT,
   async ({
     params,
-  }: ControllerInput<{}, { customId: string }>): Promise<ResponseData> => {
-    return TodoService.deleteTodo(params.customId)
+  }: ControllerInput<{}, { publicId: string }>): Promise<ResponseData> => {
+    return TodoService.deleteTodo(params.publicId)
   },
 )

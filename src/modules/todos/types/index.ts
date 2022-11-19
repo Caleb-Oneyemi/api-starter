@@ -2,7 +2,7 @@ import { Document, Model } from 'mongoose'
 import { UserAttributes } from '../../../common'
 
 export interface TodoAttributes {
-  customId: string
+  publicId: string
   task: string
   dueDate: Date
   owner: string | UserAttributes
@@ -35,5 +35,5 @@ export interface TodoQueryInput {
 export type UserTodoQueryInput = TodoQueryInput & { owner: string }
 
 export type UpdateTodoInput = Partial<
-  Omit<TodoAttributes, 'owner' | 'customId'>
+  Omit<TodoAttributes, 'owner' | 'publicId'>
 >

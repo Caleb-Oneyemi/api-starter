@@ -11,7 +11,7 @@ export const generateCode = (size: number) => {
   return crypto.randomInt(parseInt(min), parseInt(max))
 }
 
-export const generateCustomId = async (size?: number) => {
+export const generatePublicId = async (size?: number) => {
   if (size == undefined) return nanoid()
   return nanoid(size)
 }

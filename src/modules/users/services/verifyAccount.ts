@@ -8,11 +8,11 @@ export const verifyAccount = async (token: string) => {
     throw new BadRequestError('invalid token')
   }
 
-  const user = await UserDAL.getAppUserByCustomId(res.id)
+  const user = await UserDAL.getAppUserByPublicId(res.id)
   if (!user) {
     throw new NotFoundError('user not found')
   }
 
   handleTokenValidation(token, user.salt)
-  await UserDAL.updateAppUser({ customId: res.id }, { confirmed: true })
+  await UserDAL.updateAppUser({ publicId: res.id }, { confirmed: true })
 }

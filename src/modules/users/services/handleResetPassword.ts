@@ -20,7 +20,7 @@ export const handleResetPassword = async (input: ResetPasswordInput) => {
     throw new BadRequestError('invalid token')
   }
 
-  const user = await UserDAL.getAppUserByCustomId(res.id)
+  const user = await UserDAL.getAppUserByPublicId(res.id)
   if (!user) {
     throw new BadRequestError('user not found')
   }
@@ -33,7 +33,7 @@ export const handleResetPassword = async (input: ResetPasswordInput) => {
   const salt = generateSalt(12)
   const password = await hashPassword(newPassword)
   return UserDAL.updateAppUser(
-    { customId: res.id },
+    { publicId: res.id },
     { salt, password, previousResetPasswordToken: token },
   )
 }

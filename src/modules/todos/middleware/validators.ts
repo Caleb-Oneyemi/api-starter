@@ -1,5 +1,5 @@
 import { createTodoSchema, getTodosSchema, updateTodoSchema } from './schemas'
-import { getTodoByCustomId } from '../data'
+import { getTodoByPublicId } from '../data'
 import { TodoDoc } from '../types'
 import { middlewareWrapper, checkPermissions } from '../../../common'
 
@@ -20,8 +20,8 @@ export const updateTodoValidator = middlewareWrapper(
     const userId = user?.id as string
     await checkPermissions<TodoDoc>({
       userId,
-      recordId: params.customId,
-      getRecord: getTodoByCustomId,
+      recordId: params.publicId,
+      getRecord: getTodoByPublicId,
     })
 
     await updateTodoSchema.parseAsync(input)
@@ -33,8 +33,8 @@ export const deleteTodoValidator = middlewareWrapper(
     const userId = user?.id as string
     await checkPermissions({
       userId,
-      recordId: params.customId,
-      getRecord: getTodoByCustomId,
+      recordId: params.publicId,
+      getRecord: getTodoByPublicId,
     })
   },
 )

@@ -1,7 +1,7 @@
 import * as TodoDAL from '../data'
 import {
   BadRequestError,
-  generateCustomId,
+  generatePublicId,
   NotFoundError,
 } from '../../../common'
 
@@ -13,7 +13,7 @@ import {
 } from '../types'
 
 export const createTodo = async (input: CreateTodoInput) => {
-  const customId = await generateCustomId()
+  const publicId = await generatePublicId()
   const dueDate = new Date(input.dueDate)
   if (new Date() > dueDate) {
     throw new BadRequestError('due date must be a future date')
@@ -21,7 +21,7 @@ export const createTodo = async (input: CreateTodoInput) => {
 
   return TodoDAL.createTodo({
     ...input,
-    customId,
+    publicId,
     dueDate,
   })
 }
@@ -101,13 +101,13 @@ export const getUserTodos = async ({
   }
 }
 
-export const getTodoByCustomId = async (customId: string) => {
-  const todo = await TodoDAL.getTodoByCustomId(customId, true)
+export const getTodoByPublicId = async (publicId: string) => {
+  const todo = await TodoDAL.getTodoByPublicId(publicId, true)
   if (!todo) throw new NotFoundError('todo record does not exist')
   return todo
 }
 
-export const updateTodo = async (customId: string, input: UpdateTodoInput) => {
+export const updateTodo = async (publicId: string, input: UpdateTodoInput) => {
   const data = input
   let dueDate: Date
 
@@ -120,12 +120,12 @@ export const updateTodo = async (customId: string, input: UpdateTodoInput) => {
     Object.assign(data, { dueDate })
   }
 
-  const todo = await TodoDAL.updateTodo(customId, data)
+  const todo = await TodoDAL.updateTodo(publicId, data)
   if (!todo) throw new NotFoundError('todo record does not exist')
   return todo
 }
 
-export const deleteTodo = async (customId: string) => {
-  const todo = await TodoDAL.deleteTodo(customId)
+export const deleteTodo = async (publicId: string) => {
+  const todo = await TodoDAL.deleteTodo(publicId)
   if (!todo) throw new NotFoundError('todo record does not exist')
 }

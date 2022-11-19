@@ -1,5 +1,5 @@
 import config from 'config'
-import { logger, hashPassword, generateCustomId, generateSalt } from '../common'
+import { logger, hashPassword, generatePublicId, generateSalt } from '../common'
 import { createAdminUser, getAdminUserByUsername } from '../modules/users/data'
 
 const username: string = config.get('adminUsername')
@@ -14,12 +14,12 @@ export const createDefaultAdminUser = async () => {
   }
 
   try {
-    const [password, customId] = await Promise.all([
+    const [password, publicId] = await Promise.all([
       hashPassword(pass),
-      generateCustomId(),
+      generatePublicId(),
     ])
     const salt = generateSalt(24)
-    await createAdminUser({ username, password, customId, salt })
+    await createAdminUser({ username, password, publicId, salt })
     logger.debug('admin user created successfully')
   } catch (err) {
     logger.warn(`failed to create default admin user because ${err}`)

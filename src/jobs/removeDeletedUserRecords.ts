@@ -13,7 +13,7 @@ const removeDeletedUserRecords = async () => {
     const users = getUsersToBeDeleted()
     for await (const user of users) {
       await deleteUserTodos(user.id, session)
-      await hardDeleteUser(user.customId, session)
+      await hardDeleteUser(user.publicId, session)
     }
 
     await session.commitTransaction()

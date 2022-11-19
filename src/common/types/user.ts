@@ -1,7 +1,7 @@
 import { Document, Model } from 'mongoose'
 
 export interface UserAttributes {
-  customId: string
+  publicId: string
   password: string
   salt: string
 }
@@ -31,7 +31,7 @@ export interface AppUserModel extends Model<AppUserDoc> {
 export type Filter =
   | Record<'email', string>
   | Record<'id', string>
-  | Record<'customId', string>
+  | Record<'publicId', string>
 
 export type RequestUser = Partial<AppUserDoc | AdminUserDoc>
 

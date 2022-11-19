@@ -10,7 +10,7 @@ export const handleForgotPassword = async (email: string) => {
 
   const expires = 60 * 60 * 24
   const token = generateToken(
-    { id: user.customId },
+    { id: user.publicId },
     { salt: user.salt, expires },
   )
 

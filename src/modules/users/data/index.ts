@@ -16,8 +16,8 @@ export const getAppUserById = async (id: string) => {
   return AppUser.findById(id)
 }
 
-export const getAppUserByCustomId = async (customId: string) => {
-  return AppUser.findOne({ customId })
+export const getAppUserByPublicId = async (publicId: string) => {
+  return AppUser.findOne({ publicId })
 }
 
 export const getAppUserByEmail = async (email: string) => {
@@ -43,10 +43,10 @@ export const getAdminUserByUsername = async (username: string) => {
   return AdminUser.findOne({ username })
 }
 
-export const getUserByCustomId = async (
-  customId: string,
+export const getUserByPublicId = async (
+  publicId: string,
 ): Promise<AppUserDoc | AdminUserDoc | null> => {
-  return User.findOne({ customId })
+  return User.findOne({ publicId })
 }
 
 export const getUsersToBeDeleted = (date = new Date()) => {
@@ -55,6 +55,6 @@ export const getUsersToBeDeleted = (date = new Date()) => {
   }).cursor()
 }
 
-export const hardDeleteUser = (customId: string, session: ClientSession) => {
-  return AppUser.deleteOne({ customId }, { session })
+export const hardDeleteUser = (publicId: string, session: ClientSession) => {
+  return AppUser.deleteOne({ publicId }, { session })
 }

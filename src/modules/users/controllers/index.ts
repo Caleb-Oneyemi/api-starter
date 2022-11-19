@@ -47,7 +47,7 @@ export const updateUser = controllerWrapper(
     user,
     input,
   }: ControllerInput<UpdateUserInput>): Promise<ResponseData> => {
-    const result = await UserService.updateUser(user?.customId as string, input)
+    const result = await UserService.updateUser(user?.publicId as string, input)
     return result
   },
 )
@@ -58,7 +58,7 @@ export const changePassword = controllerWrapper(
     user,
     input,
   }: ControllerInput<ChangePasswordInput>): Promise<ResponseData> => {
-    await UserService.changeUserPassword(user?.customId as string, input)
+    await UserService.changeUserPassword(user?.publicId as string, input)
   },
 )
 export const verifyAccount = controllerWrapper(
@@ -71,14 +71,14 @@ export const verifyAccount = controllerWrapper(
 export const resendAccountVerification = controllerWrapper(
   httpStatus.OK,
   async ({ user }): Promise<ResponseData> => {
-    await UserService.resendAccountVerification(user?.customId as string)
+    await UserService.resendAccountVerification(user?.publicId as string)
   },
 )
 
 export const deleteUser = controllerWrapper(
   httpStatus.NO_CONTENT,
   async ({ user }): Promise<ResponseData> => {
-    await UserService.deleteUser(user?.customId as string)
+    await UserService.deleteUser(user?.publicId as string)
   },
 )
 
@@ -105,7 +105,7 @@ export const resetPassword = controllerWrapper(
 export const logOut = controllerWrapper(
   httpStatus.OK,
   async ({ user }): Promise<ResponseData> => {
-    await UserService.handleLogout(user?.customId as string)
+    await UserService.handleLogout(user?.publicId as string)
     return { message: 'user tokens invalidated' }
   },
 )

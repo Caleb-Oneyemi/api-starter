@@ -1,9 +1,9 @@
 import { TokenExpiredError } from 'jsonwebtoken'
 import { BadRequestError, generateToken, validateToken } from '../../../common'
 
-export const getMailVerificationToken = (customId: string, salt: string) => {
+export const getMailVerificationToken = (publicId: string, salt: string) => {
   const expires = 60 * 60 * 48
-  const token = generateToken({ id: customId }, { salt, expires })
+  const token = generateToken({ id: publicId }, { salt, expires })
   return token
 }
 

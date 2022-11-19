@@ -3,7 +3,7 @@ import { UserAttributes } from '../../../common'
 
 const userSchema = new Schema<UserAttributes>(
   {
-    customId: {
+    publicId: {
       type: String,
       required: true,
       unique: true,
