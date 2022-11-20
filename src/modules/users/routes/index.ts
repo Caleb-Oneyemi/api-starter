@@ -24,6 +24,8 @@ import {
   resetPassword,
   logOut,
   getPhotoUploadUrl,
+  updateProfilePhoto,
+  deleteProfilePhoto,
 } from '../controllers'
 
 const router = Router()
@@ -50,5 +52,7 @@ router
   .post('/reset-password', resetPasswordValidator, resetPassword)
   .get('/logout', isAuthenticated, logOut)
   .get('/photo/upload-url', isAuthenticated, getPhotoUploadUrl)
+  .patch('/photo', isAuthenticated, updateProfilePhoto)
+  .delete('/photo', isAuthenticated, deleteProfilePhoto)
 
 export { router as userRoutes }

@@ -117,3 +117,17 @@ export const getPhotoUploadUrl = controllerWrapper(
     return { url }
   },
 )
+
+export const updateProfilePhoto = controllerWrapper(
+  httpStatus.OK,
+  async ({ user }): Promise<ResponseData> => {
+    const result = await UserService.updatePhoto(user as AppUserAttributes)
+    return result
+  },
+)
+export const deleteProfilePhoto = controllerWrapper(
+  httpStatus.NO_CONTENT,
+  async ({ user }): Promise<ResponseData> => {
+    await UserService.deletePhoto(user?.publicId as string)
+  },
+)

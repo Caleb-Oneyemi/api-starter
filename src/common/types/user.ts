@@ -12,7 +12,7 @@ export interface AppUserAttributes extends UserAttributes {
   lastName: string
   email: string
   phoneNumber?: string
-  photoUrl?: string
+  photoUrl?: string | null
   deletedAt?: Date
   confirmed?: boolean
   previousResetPasswordToken?: string
