@@ -14,4 +14,5 @@ export interface ClientMethodInput {
   bucketName: string
   expires: number
   fileType: FileType
+  isPublic?: boolean
 }

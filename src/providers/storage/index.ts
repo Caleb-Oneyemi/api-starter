@@ -13,10 +13,12 @@ export class StorageClient {
     bucketName,
     expires,
     fileType,
+    isPublic = false,
   }: ClientMethodInput) {
     const command = new PutObjectCommand({
       Bucket: bucketName,
       Key: key,
+      ACL: isPublic ? 'public-read' : 'private',
     })
 
     return getSignedUrl(getClient(fileType, this.params), command, {
@@ -28,7 +30,7 @@ export class StorageClient {
     key,
     bucketName,
     fileType,
-  }: Omit<ClientMethodInput, 'expires'>) {
+  }: Omit<ClientMethodInput, 'expires' | 'isPublic'>) {
     const command = new DeleteObjectCommand({
       Bucket: bucketName,
       Key: key,

@@ -109,3 +109,11 @@ export const logOut = controllerWrapper(
     return { message: 'user tokens invalidated' }
   },
 )
+
+export const getPhotoUploadUrl = controllerWrapper(
+  httpStatus.OK,
+  async ({ user }): Promise<ResponseData> => {
+    const url = await UserService.getPhotoUploadUrl(user?.publicId as string)
+    return { url }
+  },
+)
