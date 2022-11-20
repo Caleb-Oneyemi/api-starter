@@ -16,6 +16,8 @@
     "migrate:down": "dotenv ts-node src/scripts/migrateDown.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.213.0",
+    "@aws-sdk/s3-request-presigner": "^3.213.0",
     "@sendgrid/mail": "^7.7.0",
     "compression": "^1.7.4",
     "config": "^3.3.8",
