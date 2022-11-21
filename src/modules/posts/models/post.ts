@@ -1,34 +1,33 @@
 import { Schema, model } from 'mongoose'
 import { UserTypes } from '../../../common'
-import { TodoAttributes, TodoDoc, TodoModel } from '../types'
+import { PostAttributes, PostDoc, PostModel } from '../types'
 
-const todoSchema = new Schema<TodoAttributes>(
+const postSchema = new Schema<PostAttributes>(
   {
     publicId: {
       type: String,
       required: true,
       trim: true,
     },
-    task: {
+    title: {
       type: String,
       required: true,
       trim: true,
+      index: true,
+      maxlength: 50,
     },
-    description: {
+    content: {
       type: String,
       trim: true,
-    },
-    dueDate: {
-      type: Date,
-      required: true,
-    },
-    isCompleted: {
-      type: Boolean,
-      default: false,
+      maxlength: 1000,
     },
     owner: {
       type: Schema.Types.ObjectId,
       ref: UserTypes.APP_USER,
+    },
+    likes: {
+      type: Number,
+      default: 0,
     },
   },
   {
@@ -43,13 +42,9 @@ const todoSchema = new Schema<TodoAttributes>(
   },
 )
 
-todoSchema.index({ publicId: 1, owner: 1 }, { unique: true })
-todoSchema.index({ task: 1, owner: 1 }, { unique: true })
-todoSchema.index({ task: 1, description: 1 })
-
-todoSchema.statics.build = (input: TodoAttributes) => {
+postSchema.statics.build = (input: PostAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  return new Todo(input).save()
+  return new Post(input).save()
 }
 
-export const Todo = model<TodoDoc, TodoModel>('Todo', todoSchema)
+export const Post = model<PostDoc, PostModel>('Post', postSchema)

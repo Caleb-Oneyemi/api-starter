@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import { userRoutes } from './users'
-import { todoRoutes } from './todos'
+import { postRoutes } from './posts'
 
 const router = Router()
 
 router.use('/api/users', userRoutes)
 
-router.use('/api/todos', todoRoutes)
+router.use('/api/posts', postRoutes)
 
 export { router as ApiRouter }

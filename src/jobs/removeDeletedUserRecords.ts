@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { CronJob } from 'cron'
-import { deleteUserTodos } from '../modules/todos/data'
+import { deleteUserPosts } from '../modules/posts/data'
 import { getUsersToBeDeleted, hardDeleteUser } from '../modules/users/data'
 import { logger } from '../common'
 
@@ -12,7 +12,7 @@ const removeDeletedUserRecords = async () => {
   try {
     const users = getUsersToBeDeleted()
     for await (const user of users) {
-      await deleteUserTodos(user.id, session)
+      await deleteUserPosts(user.id, session)
       await hardDeleteUser(user.publicId, session)
     }
 
