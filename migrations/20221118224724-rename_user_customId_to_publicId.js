@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 // TODO: replace implementation with transactions
 module.exports = {
   async up(db) {

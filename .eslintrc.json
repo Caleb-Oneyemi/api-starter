@@ -16,6 +16,8 @@
       {
         "extendDefaults": true
       }
-    ]
-  }
+    ],
+    "@typescript-eslint/no-var-requires": "warn"
+  },
+  "env": { "node": true }
 }
