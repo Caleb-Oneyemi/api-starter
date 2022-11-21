@@ -1,17 +1,21 @@
-import { createPostSchema, getPostsSchema, updatePostSchema } from './schemas'
-import { getPostByPublicId } from '../data'
-import { PostDoc } from '../types'
-import { middlewareWrapper, checkPermissions } from '../../../common'
+import {
+  createCommentSchema,
+  createPostSchema,
+  updateCommentSchema,
+  updatePostSchema,
+} from './schemas'
+
+import { getCommentByPublicId, getPostByPublicId } from '../data'
+import { CommentDoc, PostDoc } from '../types'
+import {
+  middlewareWrapper,
+  checkPermissions,
+  NotFoundError,
+} from '../../../common'
 
 export const createPostValidator = middlewareWrapper(
   async ({ input }): Promise<void> => {
     await createPostSchema.parseAsync(input)
-  },
-)
-
-export const getPostsValidator = middlewareWrapper(
-  async ({ query }): Promise<void> => {
-    await getPostsSchema.parseAsync(query)
   },
 )
 
@@ -35,6 +39,49 @@ export const deletePostValidator = middlewareWrapper(
       userId,
       recordId: params.publicId,
       getRecord: getPostByPublicId,
+    })
+  },
+)
+
+export const createCommentValidator = middlewareWrapper(
+  async ({ input, params }): Promise<void> => {
+    await createCommentSchema.parseAsync(input)
+    const existingPost = await getPostByPublicId(params.postId)
+    if (!existingPost) {
+      throw new NotFoundError('post not found')
+    }
+  },
+)
+
+export const getCommentsValidator = middlewareWrapper(
+  async ({ params }): Promise<void> => {
+    const existingPost = await getPostByPublicId(params.postId)
+    if (!existingPost) {
+      throw new NotFoundError('post not found')
+    }
+  },
+)
+
+export const updateCommentValidator = middlewareWrapper(
+  async ({ input, params, user }): Promise<void> => {
+    const userId = user?.id as string
+    await checkPermissions<CommentDoc>({
+      userId,
+      recordId: params.publicId,
+      getRecord: getCommentByPublicId,
+    })
+
+    await updateCommentSchema.parseAsync(input)
+  },
+)
+
+export const deleteCommentValidator = middlewareWrapper(
+  async ({ params, user }): Promise<void> => {
+    const userId = user?.id as string
+    await checkPermissions({
+      userId,
+      recordId: params.publicId,
+      getRecord: getCommentByPublicId,
     })
   },
 )

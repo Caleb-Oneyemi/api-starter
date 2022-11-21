@@ -1,12 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { UserTypes } from '../../../common'
-import {
-  PostCommentAttributes,
-  PostCommentDoc,
-  PostCommentModel,
-} from '../types'
+import { CommentAttributes, CommentDoc, CommentModel } from '../types'
 
-const postCommentSchema = new Schema<PostCommentAttributes>(
+const commentSchema = new Schema<CommentAttributes>(
   {
     publicId: {
       type: String,
@@ -17,7 +13,7 @@ const postCommentSchema = new Schema<PostCommentAttributes>(
       type: String,
       required: true,
     },
-    content: {
+    body: {
       type: String,
       required: true,
       trim: true,
@@ -44,12 +40,9 @@ const postCommentSchema = new Schema<PostCommentAttributes>(
   },
 )
 
-postCommentSchema.statics.build = (input: PostCommentAttributes) => {
+commentSchema.statics.build = (input: CommentAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  return new PostComment(input).save()
+  return new Comment(input).save()
 }
 
-export const PostComment = model<PostCommentDoc, PostCommentModel>(
-  'PostComment',
-  postCommentSchema,
-)
+export const Comment = model<CommentDoc, CommentModel>('Comment', commentSchema)
