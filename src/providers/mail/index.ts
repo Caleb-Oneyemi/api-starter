@@ -8,7 +8,7 @@ export const sendRegistrationMail = async (
   token: string,
 ) => {
   const subject = 'Welcome to the App! Verify Your Email'
-  const url = `${config.get('appUrl')}/verify/${token}`
+  const url = `${config.get('frontendAppUrl')}/verify/${token}`
 
   const html = await renderTemplate({
     greetingText: `Hi ${firstName}, Welcome to the App`,
@@ -25,7 +25,7 @@ export const sendEmailVerificationMail = async (
   token: string,
 ) => {
   const subject = 'Welcome to the App! Verify Your Email'
-  const url = `${config.get('appUrl')}/verify/${token}`
+  const url = `${config.get('frontendAppUrl')}/verify/${token}`
 
   const html = await renderTemplate({
     greetingText: `Hi ${firstName}`,
@@ -42,7 +42,7 @@ export const sendPasswordResetMail = async (
   token: string,
 ) => {
   const subject = 'Password Reset'
-  const url = `${config.get('appUrl')}/reset-password/${token}`
+  const url = `${config.get('frontendAppUrl')}/reset-password/${token}`
 
   const html = await renderTemplate({
     greetingText: `Hi ${firstName}`,

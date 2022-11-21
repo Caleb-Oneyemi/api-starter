@@ -3,8 +3,8 @@ import * as UserDAL from '../data'
 import { AppUserAttributes, FileTypes } from '../../../common'
 import storageClient from '../../../storageClient'
 
-const bucketName: string = config.get('doPhotoBucketName')
-const region: string = config.get('doRegion')
+const bucketName: string = config.get('digitalOcean.photoBucketName')
+const region: string = config.get('digitalOcean.region')
 
 export const getPhotoUploadUrl = async (publicId: string) => {
   return storageClient.getSignedUrl({

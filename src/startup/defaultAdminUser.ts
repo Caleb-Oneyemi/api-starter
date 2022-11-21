@@ -2,8 +2,8 @@ import config from 'config'
 import { logger, hashPassword, generatePublicId, generateSalt } from '../common'
 import { createAdminUser, getAdminUserByUsername } from '../modules/users/data'
 
-const username: string = config.get('adminUsername')
-const pass: string = config.get('adminPassword')
+const username: string = config.get('admin.username')
+const pass: string = config.get('admin.password')
 
 export const createDefaultAdminUser = async () => {
   const adminUser = await getAdminUserByUsername(username)
