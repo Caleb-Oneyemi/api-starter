@@ -65,3 +65,25 @@ export const deleteComment = controllerWrapper(
     return CommentService.deleteComment(params.publicId)
   },
 )
+
+export const likeComment = controllerWrapper(
+  httpStatus.OK,
+  async ({
+    params,
+    user,
+  }: ControllerInput<{}, { commentId: string }>): Promise<ResponseData> => {
+    const owner = user?.id as string
+    return CommentService.likeComment({ owner, commentId: params.commentId })
+  },
+)
+
+export const unlikeComment = controllerWrapper(
+  httpStatus.NO_CONTENT,
+  async ({
+    params,
+    user,
+  }: ControllerInput<{}, { commentId: string }>): Promise<ResponseData> => {
+    const owner = user?.id as string
+    return CommentService.unlikeComment({ owner, commentId: params.commentId })
+  },
+)

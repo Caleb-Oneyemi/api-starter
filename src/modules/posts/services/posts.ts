@@ -1,4 +1,4 @@
-import * as PostDAL from '../data'
+import * as DAL from '../data'
 import {
   BadRequestError,
   generatePublicId,
@@ -10,11 +10,12 @@ import {
   PostsByUserQueryInput,
   UpdatePostInput,
   CreatePostInput,
+  PostLikeAttributes,
 } from '../types'
 
 export const createPost = async (input: CreatePostInput) => {
   const publicId = await generatePublicId()
-  return PostDAL.createPost({
+  return DAL.createPost({
     ...input,
     publicId,
   })
@@ -33,13 +34,13 @@ export const getAllPosts = async ({
     })
   }
 
-  const count = await PostDAL.getTotalPostCount(filter)
+  const count = await DAL.getTotalPostCount(filter)
   const totalPages = Math.ceil(count / +limit) || 1
   if (+page > totalPages) {
     throw new BadRequestError('page number must be below total pages')
   }
 
-  const posts = await PostDAL.getAllPosts({
+  const posts = await DAL.getAllPosts({
     page: +page,
     limit: +limit,
     sort,
@@ -68,13 +69,13 @@ export const getPostsByUser = async ({
     })
   }
 
-  const count = await PostDAL.getTotalUserPostCount(filter)
+  const count = await DAL.getTotalUserPostCount(filter)
   const totalPages = Math.ceil(count / +limit) || 1
   if (+page > totalPages) {
     throw new BadRequestError('page number must be below total pages')
   }
 
-  const posts = await PostDAL.getPostsByUser({
+  const posts = await DAL.getPostsByUser({
     page: +page,
     limit: +limit,
     sort,
@@ -90,7 +91,7 @@ export const getPostsByUser = async ({
 }
 
 export const getPostByPublicId = async (publicId: string) => {
-  const post = await PostDAL.getPostByPublicId(publicId, true)
+  const post = await DAL.getPostByPublicId(publicId, true)
   if (!post) {
     throw new NotFoundError('post record does not exist')
   }
@@ -99,7 +100,7 @@ export const getPostByPublicId = async (publicId: string) => {
 }
 
 export const updatePost = async (publicId: string, input: UpdatePostInput) => {
-  const post = await PostDAL.updatePost(publicId, input)
+  const post = await DAL.updatePost(publicId, input)
   if (!post) {
     throw new NotFoundError('post record does not exist')
   }
@@ -108,8 +109,16 @@ export const updatePost = async (publicId: string, input: UpdatePostInput) => {
 }
 
 export const deletePost = async (publicId: string) => {
-  const post = await PostDAL.deletePost(publicId)
+  const post = await DAL.deletePost(publicId)
   if (!post) {
     throw new NotFoundError('post record does not exist')
   }
+}
+
+export const likePost = async (input: PostLikeAttributes) => {
+  return DAL.createPostLike(input)
+}
+
+export const unlikePost = async (input: PostLikeAttributes) => {
+  return DAL.deletePostLike(input)
 }

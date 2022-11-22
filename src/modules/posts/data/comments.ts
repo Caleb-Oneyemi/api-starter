@@ -1,7 +1,7 @@
 import { ClientSession } from 'mongoose'
 import { QueryInput } from '../../../common'
-import { Comment } from '../models'
-import { CommentAttributes } from '../types'
+import { Comment, CommentLike } from '../models'
+import { CommentAttributes, CommentLikeAttributes } from '../types'
 
 export const createComment = (input: CommentAttributes) => {
   return Comment.build(input)
@@ -22,6 +22,7 @@ export const getAllComments = ({
       path: 'owner',
       select: 'firstName lastName photoUrl -_id -type',
     })
+    .populate('likes')
     .exec()
 }
 
@@ -36,11 +37,16 @@ export const getCommentsByUser = ({
     .sort({ createdAt: sort })
     .limit(limit)
     .skip((page - 1) * limit)
+    .populate('likes')
     .exec()
 }
 
 export const getCommentByPublicId = async (publicId: string) => {
   return Comment.findOne({ publicId })
+}
+
+export const getCommentById = async (id: string) => {
+  return Comment.findById(id).exec()
 }
 
 export const updateComment = (
@@ -64,6 +70,14 @@ export const getTotalCommentCount = (filter: Record<'postId', string>) => {
 
 export const getTotalUserCommentCount = (filter: Record<'owner', string>) => {
   return Comment.countDocuments(filter)
+}
+
+export const createCommentLike = (input: CommentLikeAttributes) => {
+  return CommentLike.build(input)
+}
+
+export const deleteCommentLike = (input: CommentLikeAttributes) => {
+  return CommentLike.findOneAndDelete(input)
 }
 
 /** FOR SCHEDULED USER DELETION */

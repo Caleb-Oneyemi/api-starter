@@ -1,5 +1,7 @@
 import { Document, Model } from 'mongoose'
 import { UserAttributes } from '../../../../common'
+import { CommentAttributes } from '../comments'
+import { PostAttributes } from '../posts'
 
 export interface BaseLikeAttributes {
   owner: string | UserAttributes
@@ -12,7 +14,7 @@ export interface BaseLikeDoc extends BaseLikeAttributes, Document {
 }
 
 export interface PostLikeAttributes extends BaseLikeAttributes {
-  postId: string
+  postId: string | PostAttributes
 }
 
 export interface PostLikeDoc extends PostLikeAttributes, BaseLikeDoc {}
@@ -22,7 +24,7 @@ export interface PostLikeModel extends Model<PostLikeDoc> {
 }
 
 export interface CommentLikeAttributes extends BaseLikeAttributes {
-  commentId: string
+  commentId: string | CommentAttributes
 }
 
 export interface CommentLikeDoc extends CommentLikeAttributes, BaseLikeDoc {}

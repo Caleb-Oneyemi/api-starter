@@ -1,7 +1,7 @@
 import { ClientSession } from 'mongoose'
 import { QueryInput } from '../../../common'
-import { Post } from '../models'
-import { PostAttributes } from '../types'
+import { Post, PostLike } from '../models'
+import { PostAttributes, PostLikeAttributes } from '../types'
 
 export const createPost = (input: PostAttributes) => {
   return Post.build(input)
@@ -22,6 +22,7 @@ export const getAllPosts = ({
       path: 'owner',
       select: 'firstName lastName photoUrl -_id -type',
     })
+    .populate('likes')
     .exec()
 }
 
@@ -36,6 +37,7 @@ export const getPostsByUser = ({
     .sort({ createdAt: sort })
     .limit(limit)
     .skip((page - 1) * limit)
+    .populate('likes')
     .exec()
 }
 
@@ -50,6 +52,10 @@ export const getPostByPublicId = async (publicId: string, populate = false) => {
       select: 'firstName lastName photoUrl -_id -type',
     })
     .exec()
+}
+
+export const getPostById = async (id: string) => {
+  return Post.findById(id).exec()
 }
 
 export const updatePost = (
@@ -73,6 +79,14 @@ export const getTotalPostCount = (filter: Record<string, unknown>) => {
 
 export const getTotalUserPostCount = (filter: Record<string, unknown>) => {
   return Post.countDocuments(filter)
+}
+
+export const createPostLike = (input: PostLikeAttributes) => {
+  return PostLike.build(input)
+}
+
+export const deletePostLike = (input: PostLikeAttributes) => {
+  return PostLike.findOneAndDelete(input)
 }
 
 /** FOR SCHEDULED USER DELETION */

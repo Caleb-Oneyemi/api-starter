@@ -9,20 +9,19 @@ import {
   updateCommentValidator,
   deleteCommentValidator,
   paramPostExists,
+  paramPostWithMongoIdExists,
+  paramCommentWithMongoIdExists,
 } from '../middleware'
 
 import * as Ctrl from '../controllers'
 
 const router = Router()
 
-router.param('postId', async (req, res, next, postId) => {
-  try {
-    await paramPostExists(postId)
-    next()
-  } catch (err) {
-    next(err)
-  }
-})
+router.param('postId', paramPostExists)
+
+router.param('id', paramPostWithMongoIdExists)
+
+router.param('commentId', paramCommentWithMongoIdExists)
 
 router
   //POSTS
@@ -47,5 +46,10 @@ router
     deleteCommentValidator,
     Ctrl.deleteComment,
   ])
+  //LIKES
+  .post('/:id/like', Ctrl.likePost)
+  .delete('/:id/unlike', Ctrl.unlikePost)
+  .post('/:id/comments/:commentId/like', Ctrl.likeComment)
+  .delete('/:id/comments/:commentId/unlike', Ctrl.unlikeComment)
 
 export { router as postRoutes }

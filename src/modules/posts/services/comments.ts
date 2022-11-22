@@ -1,5 +1,5 @@
-import * as CommentDAL from '../data'
-import { CreateCommentInput } from '../types'
+import * as DAL from '../data'
+import { CommentLikeAttributes, CreateCommentInput } from '../types'
 
 import {
   BadRequestError,
@@ -10,7 +10,7 @@ import {
 
 export const createComment = async (input: CreateCommentInput) => {
   const publicId = await generatePublicId()
-  return CommentDAL.createComment({
+  return DAL.createComment({
     ...input,
     publicId,
   })
@@ -21,13 +21,13 @@ export const getCommentsByPostId = async (
   { page = 1, limit = 10, sort }: QueryInput,
 ) => {
   const filter = { postId }
-  const count = await CommentDAL.getTotalCommentCount(filter)
+  const count = await DAL.getTotalCommentCount(filter)
   const totalPages = Math.ceil(count / +limit) || 1
 
   if (+page > totalPages) {
     throw new BadRequestError('page number must be below total pages')
   }
-  const comments = await CommentDAL.getAllComments({
+  const comments = await DAL.getAllComments({
     page: +page,
     limit: +limit,
     sort,
@@ -49,13 +49,13 @@ export const getLoggedInUserComments = async ({
   sort,
 }: QueryInput & { owner: string }) => {
   const filter = { owner }
-  const count = await CommentDAL.getTotalUserCommentCount(filter)
+  const count = await DAL.getTotalUserCommentCount(filter)
   const totalPages = Math.ceil(count / +limit) || 1
 
   if (+page > totalPages) {
     throw new BadRequestError('page number must be below total pages')
   }
-  const comments = await CommentDAL.getCommentsByUser({
+  const comments = await DAL.getCommentsByUser({
     page: +page,
     limit: +limit,
     sort,
@@ -71,7 +71,7 @@ export const getLoggedInUserComments = async ({
 }
 
 export const updateComment = async (publicId: string, body: string) => {
-  const comment = await CommentDAL.updateComment(publicId, { body })
+  const comment = await DAL.updateComment(publicId, { body })
   if (!comment) {
     throw new NotFoundError('Comment record does not exist')
   }
@@ -80,8 +80,16 @@ export const updateComment = async (publicId: string, body: string) => {
 }
 
 export const deleteComment = async (publicId: string) => {
-  const comment = await CommentDAL.deleteComment(publicId)
+  const comment = await DAL.deleteComment(publicId)
   if (!comment) {
     throw new NotFoundError('Comment record does not exist')
   }
+}
+
+export const likeComment = async (input: CommentLikeAttributes) => {
+  return DAL.createCommentLike(input)
+}
+
+export const unlikeComment = async (input: CommentLikeAttributes) => {
+  return DAL.deleteCommentLike(input)
 }

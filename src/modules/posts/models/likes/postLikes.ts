@@ -5,11 +5,11 @@ import { LikeTypes } from '../../constants'
 
 const postLikeSchema = new Schema<PostLikeAttributes, PostLikeModel>({
   postId: {
-    type: String,
-    required: true,
-    trim: true,
+    type: Schema.Types.ObjectId,
   },
 })
+
+postLikeSchema.index({ owner: 1, postId: 1 }, { unique: true })
 
 postLikeSchema.statics.build = (input: PostLikeAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define

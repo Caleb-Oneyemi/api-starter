@@ -68,3 +68,25 @@ export const deletePost = controllerWrapper(
     return PostService.deletePost(params.publicId)
   },
 )
+
+export const likePost = controllerWrapper(
+  httpStatus.OK,
+  async ({
+    params,
+    user,
+  }: ControllerInput<{}, { id: string }>): Promise<ResponseData> => {
+    const owner = user?.id as string
+    return PostService.likePost({ owner, postId: params.id })
+  },
+)
+
+export const unlikePost = controllerWrapper(
+  httpStatus.NO_CONTENT,
+  async ({
+    params,
+    user,
+  }: ControllerInput<{}, { id: string }>): Promise<ResponseData> => {
+    const owner = user?.id as string
+    return PostService.unlikePost({ owner, postId: params.id })
+  },
+)

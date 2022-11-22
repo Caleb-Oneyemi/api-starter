@@ -34,6 +34,7 @@ const postSchema = new Schema<PostAttributes>(
         delete ret._id
         delete ret.__v
       },
+      virtuals: true,
     },
   },
 )

@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express'
 import {
   createCommentSchema,
   createPostSchema,
@@ -5,8 +6,15 @@ import {
   updatePostSchema,
 } from './schemas'
 
-import { getCommentByPublicId, getPostByPublicId } from '../data'
+import {
+  getCommentById,
+  getCommentByPublicId,
+  getPostById,
+  getPostByPublicId,
+} from '../data'
+
 import { CommentDoc, PostDoc } from '../types'
+
 import {
   middlewareWrapper,
   checkPermissions,
@@ -73,9 +81,44 @@ export const deleteCommentValidator = middlewareWrapper(
   },
 )
 
-export const paramPostExists = async (postId: string) => {
+export const paramPostExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  postId: string,
+) => {
   const existingPost = await getPostByPublicId(postId)
   if (!existingPost) {
-    throw new NotFoundError('post not found')
+    return next(new NotFoundError('post not found'))
   }
+
+  next()
+}
+
+export const paramPostWithMongoIdExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  postId: string,
+) => {
+  const existingPost = await getPostById(postId)
+  if (!existingPost) {
+    return next(new NotFoundError('post not found'))
+  }
+
+  next()
+}
+
+export const paramCommentWithMongoIdExists = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  commentId: string,
+) => {
+  const existingPost = await getCommentById(commentId)
+  if (!existingPost) {
+    return next(new NotFoundError('comment not found'))
+  }
+
+  next()
 }
