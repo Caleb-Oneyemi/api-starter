@@ -1,13 +1,12 @@
 import { Router } from 'express'
 import { userRoutes } from './users'
-import { postRoutes, commentRoutes } from './posts'
+import { postRoutes } from './posts'
+import { isAuthenticated } from '../common'
 
 const router = Router()
 
 router.use('/api/users', userRoutes)
 
-router.use('/api/posts', postRoutes)
-
-router.use('/api/comments', commentRoutes)
+router.use('/api/posts', isAuthenticated, postRoutes)
 
 export { router as ApiRouter }

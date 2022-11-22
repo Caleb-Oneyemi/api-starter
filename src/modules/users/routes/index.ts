@@ -11,48 +11,31 @@ import {
   loginLimiter,
 } from '../middleware'
 
-import {
-  createUser,
-  getUser,
-  updateUser,
-  deleteUser,
-  loginUser,
-  verifyAccount,
-  resendAccountVerification,
-  changePassword,
-  forgotPassword,
-  resetPassword,
-  logOut,
-  getPhotoUploadUrl,
-  updateProfilePhoto,
-  deleteProfilePhoto,
-} from '../controllers'
+import * as Ctrl from '../controllers'
 
 const router = Router()
 
 router
-  .post('/', userCreationValidator, createUser)
-  .get('/', isAuthenticated, getUser)
-  .patch('/', isAuthenticated, userUpdateValidator, updateUser)
-  .delete('/', isAuthenticated, deleteUser)
-  .post('/login', loginUserValidator, loginLimiter, loginUser)
-  .get('/verify/:token', verifyAccount)
-  .post(
-    '/resend/account-verification',
+  .post('/', userCreationValidator, Ctrl.createUser)
+  .get('/', isAuthenticated, Ctrl.getUser)
+  .patch('/', isAuthenticated, userUpdateValidator, Ctrl.updateUser)
+  .delete('/', isAuthenticated, Ctrl.deleteUser)
+  .post('/login', loginUserValidator, loginLimiter, Ctrl.loginUser)
+  .get('/verify/:token', Ctrl.verifyAccount)
+  .post('/resend/account-verification', [
     isAuthenticated,
-    resendAccountVerification,
-  )
-  .patch(
-    '/change-password',
+    Ctrl.resendAccountVerification,
+  ])
+  .patch('/change-password', [
     isAuthenticated,
     passwordUpdateValidator,
-    changePassword,
-  )
-  .post('/forgot-password', forgotPasswordValidator, forgotPassword)
-  .post('/reset-password', resetPasswordValidator, resetPassword)
-  .get('/logout', isAuthenticated, logOut)
-  .get('/photo/upload-url', isAuthenticated, getPhotoUploadUrl)
-  .patch('/photo', isAuthenticated, updateProfilePhoto)
-  .delete('/photo', isAuthenticated, deleteProfilePhoto)
+    Ctrl.changePassword,
+  ])
+  .post('/forgot-password', forgotPasswordValidator, Ctrl.forgotPassword)
+  .post('/reset-password', resetPasswordValidator, Ctrl.resetPassword)
+  .get('/logout', isAuthenticated, Ctrl.logOut)
+  .get('/photo/upload-url', isAuthenticated, Ctrl.getPhotoUploadUrl)
+  .patch('/photo', isAuthenticated, Ctrl.updateProfilePhoto)
+  .delete('/photo', isAuthenticated, Ctrl.deleteProfilePhoto)
 
 export { router as userRoutes }

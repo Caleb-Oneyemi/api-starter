@@ -44,21 +44,8 @@ export const deletePostValidator = middlewareWrapper(
 )
 
 export const createCommentValidator = middlewareWrapper(
-  async ({ input, params }): Promise<void> => {
+  async ({ input }): Promise<void> => {
     await createCommentSchema.parseAsync(input)
-    const existingPost = await getPostByPublicId(params.postId)
-    if (!existingPost) {
-      throw new NotFoundError('post not found')
-    }
-  },
-)
-
-export const getCommentsValidator = middlewareWrapper(
-  async ({ params }): Promise<void> => {
-    const existingPost = await getPostByPublicId(params.postId)
-    if (!existingPost) {
-      throw new NotFoundError('post not found')
-    }
   },
 )
 
@@ -85,3 +72,10 @@ export const deleteCommentValidator = middlewareWrapper(
     })
   },
 )
+
+export const paramPostExists = async (postId: string) => {
+  const existingPost = await getPostByPublicId(postId)
+  if (!existingPost) {
+    throw new NotFoundError('post not found')
+  }
+}
