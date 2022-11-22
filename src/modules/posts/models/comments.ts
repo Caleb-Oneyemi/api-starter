@@ -23,10 +23,6 @@ const commentSchema = new Schema<CommentAttributes>(
       type: Schema.Types.ObjectId,
       ref: UserTypes.APP_USER,
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
   },
   {
     timestamps: true,
@@ -36,9 +32,17 @@ const commentSchema = new Schema<CommentAttributes>(
         delete ret._id
         delete ret.__v
       },
+      virtuals: true,
     },
   },
 )
+
+commentSchema.virtual('likes', {
+  ref: 'Like',
+  localField: '_id',
+  foreignField: 'commentId',
+  count: true,
+})
 
 commentSchema.statics.build = (input: CommentAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define

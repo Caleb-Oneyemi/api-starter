@@ -25,10 +25,6 @@ const postSchema = new Schema<PostAttributes>(
       type: Schema.Types.ObjectId,
       ref: UserTypes.APP_USER,
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
   },
   {
     timestamps: true,
@@ -41,6 +37,13 @@ const postSchema = new Schema<PostAttributes>(
     },
   },
 )
+
+postSchema.virtual('likes', {
+  ref: 'Like',
+  localField: '_id',
+  foreignField: 'postId',
+  count: true,
+})
 
 postSchema.statics.build = (input: PostAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
