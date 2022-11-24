@@ -70,7 +70,7 @@ export const deleteComment = controllerWrapper(
 )
 
 export const likeComment = controllerWrapper(
-  httpStatus.OK,
+  httpStatus.CREATED,
   async ({
     params,
     user,

@@ -70,7 +70,7 @@ export const deletePost = controllerWrapper(
 )
 
 export const likePost = controllerWrapper(
-  httpStatus.OK,
+  httpStatus.CREATED,
   async ({
     params,
     user,
