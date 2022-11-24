@@ -87,12 +87,16 @@ export const paramPostExists = async (
   next: NextFunction,
   id: string,
 ) => {
-  const existingPost = await getPostByPublicId(id)
-  if (!existingPost) {
-    return next(new NotFoundError('post not found'))
-  }
+  try {
+    const existingPost = await getPostByPublicId(id)
+    if (!existingPost) {
+      return next(new NotFoundError('post not found'))
+    }
 
-  next()
+    next()
+  } catch (err) {
+    next(err)
+  }
 }
 
 export const paramPostWithMongoIdExists = async (
@@ -101,12 +105,16 @@ export const paramPostWithMongoIdExists = async (
   next: NextFunction,
   postId: string,
 ) => {
-  const existingPost = await getPostById(postId)
-  if (!existingPost) {
-    return next(new NotFoundError('post not found'))
-  }
+  try {
+    const existingPost = await getPostById(postId)
+    if (!existingPost) {
+      return next(new NotFoundError('post not found'))
+    }
 
-  next()
+    next()
+  } catch (err) {
+    next(err)
+  }
 }
 
 export const paramCommentWithMongoIdExists = async (
@@ -115,10 +123,14 @@ export const paramCommentWithMongoIdExists = async (
   next: NextFunction,
   commentId: string,
 ) => {
-  const existingPost = await getCommentById(commentId)
-  if (!existingPost) {
-    return next(new NotFoundError('comment not found'))
-  }
+  try {
+    const existingPost = await getCommentById(commentId)
+    if (!existingPost) {
+      return next(new NotFoundError('comment not found'))
+    }
 
-  next()
+    next()
+  } catch (err) {
+    next(err)
+  }
 }
