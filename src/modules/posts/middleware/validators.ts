@@ -85,9 +85,9 @@ export const paramPostExists = async (
   req: Request,
   res: Response,
   next: NextFunction,
-  postId: string,
+  id: string,
 ) => {
-  const existingPost = await getPostByPublicId(postId)
+  const existingPost = await getPostByPublicId(id)
   if (!existingPost) {
     return next(new NotFoundError('post not found'))
   }

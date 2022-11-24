@@ -16,23 +16,23 @@ export const createComment = controllerWrapper(
     user,
   }: ControllerInput<
     { body: string },
-    { postId: string }
+    { id: string }
   >): Promise<ResponseData> => {
     const owner = user?.id as string
     return CommentService.createComment({
       body: input.body,
-      postId: params.postId,
+      postId: params.id,
       owner,
     })
   },
 )
 
-type GetCommentsType = ControllerInput<{}, { postId: string }, QueryInput>
+type GetCommentsType = ControllerInput<{}, { id: string }, QueryInput>
 
 export const getCommentsByPostId = controllerWrapper(
   httpStatus.OK,
   async ({ params, query }: GetCommentsType): Promise<ResponseData> => {
-    return CommentService.getCommentsByPostId(params.postId, query)
+    return CommentService.getCommentsByPostId(params.id, query)
   },
 )
 
@@ -52,7 +52,10 @@ export const updateComment = controllerWrapper(
   async ({
     input,
     params,
-  }: ControllerInput<{ body: string }>): Promise<ResponseData> => {
+  }: ControllerInput<
+    { body: string },
+    { publicId: string }
+  >): Promise<ResponseData> => {
     return CommentService.updateComment(params.publicId, input.body)
   },
 )

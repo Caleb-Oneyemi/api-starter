@@ -74,9 +74,9 @@ export const likePost = controllerWrapper(
   async ({
     params,
     user,
-  }: ControllerInput<{}, { id: string }>): Promise<ResponseData> => {
+  }: ControllerInput<{}, { postId: string }>): Promise<ResponseData> => {
     const owner = user?.id as string
-    return PostService.likePost({ owner, postId: params.id })
+    return PostService.likePost({ owner, postId: params.postId })
   },
 )
 
@@ -85,8 +85,8 @@ export const unlikePost = controllerWrapper(
   async ({
     params,
     user,
-  }: ControllerInput<{}, { id: string }>): Promise<ResponseData> => {
+  }: ControllerInput<{}, { postId: string }>): Promise<ResponseData> => {
     const owner = user?.id as string
-    return PostService.unlikePost({ owner, postId: params.id })
+    return PostService.unlikePost({ owner, postId: params.postId })
   },
 )

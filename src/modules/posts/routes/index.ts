@@ -17,9 +17,9 @@ import * as Ctrl from '../controllers'
 
 const router = Router()
 
-router.param('postId', paramPostExists)
+router.param('id', paramPostExists)
 
-router.param('id', paramPostWithMongoIdExists)
+router.param('postId', paramPostWithMongoIdExists)
 
 router.param('commentId', paramCommentWithMongoIdExists)
 
@@ -32,24 +32,24 @@ router
   .get('/:publicId', Ctrl.getPostByPublicId)
   .delete('/:publicId', deletePostValidator, Ctrl.deletePost)
   //COMMENTS
-  .post('/:postId/comments', createCommentValidator, Ctrl.createComment)
-  .get('/:postId/comments', genericQueryValidator, Ctrl.getCommentsByPostId)
+  .post('/:id/comments', createCommentValidator, Ctrl.createComment)
+  .get('/:id/comments', genericQueryValidator, Ctrl.getCommentsByPostId)
   .get('/comments/by-user', [
     genericQueryValidator,
     Ctrl.getLoggedInUserComments,
   ])
-  .patch('/:postId/comments/:publicId', [
+  .patch('/:id/comments/:publicId', [
     updateCommentValidator,
     Ctrl.updateComment,
   ])
-  .delete('/:postId/comments/:publicId', [
+  .delete('/:id/comments/:publicId', [
     deleteCommentValidator,
     Ctrl.deleteComment,
   ])
   //LIKES
-  .post('/:id/like', Ctrl.likePost)
-  .delete('/:id/unlike', Ctrl.unlikePost)
-  .post('/:id/comments/:commentId/like', Ctrl.likeComment)
-  .delete('/:id/comments/:commentId/unlike', Ctrl.unlikeComment)
+  .post('/:postId/like', Ctrl.likePost)
+  .delete('/:postId/unlike', Ctrl.unlikePost)
+  .post('/:postId/comments/:commentId/like', Ctrl.likeComment)
+  .delete('/:postId/comments/:commentId/unlike', Ctrl.unlikeComment)
 
 export { router as postRoutes }
