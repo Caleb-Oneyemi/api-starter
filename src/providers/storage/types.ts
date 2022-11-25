@@ -17,4 +17,5 @@ export interface ClientMethodInput {
   expires: number
   fileType: FileType
   isPublic?: boolean
+  sizeLimit?: number
 }

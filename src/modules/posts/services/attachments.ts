@@ -11,12 +11,13 @@ export const createAttachment = async (
   input: Pick<AttachmentAttributes, 'owner' | 'postId'>,
 ) => {
   const publicId = await generatePublicId()
+  const thirtyMinutes = 60 * 30
   const attachment = await DAL.createAttachment({ publicId, ...input })
 
   const { url, fields } = await storageClient.getPresignedPostUrl({
     key: publicId,
     bucketName,
-    expires: 60 * 30,
+    expires: thirtyMinutes,
     fileType: FileTypes.POST_ATTACHMENT,
     isPublic: true,
   })

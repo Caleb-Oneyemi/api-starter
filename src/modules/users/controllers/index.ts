@@ -113,8 +113,7 @@ export const logOut = controllerWrapper(
 export const getPhotoUploadUrl = controllerWrapper(
   httpStatus.OK,
   async ({ user }): Promise<ResponseData> => {
-    const url = await UserService.getPhotoUploadUrl(user?.publicId as string)
-    return { url }
+    return UserService.getPhotoUploadUrl(user?.publicId as string)
   },
 )
 

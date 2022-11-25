@@ -7,13 +7,22 @@ const bucketName: string = config.get('digitalOcean.photoBucketName')
 const region: string = config.get('digitalOcean.region')
 
 export const getPhotoUploadUrl = async (publicId: string) => {
-  return storageClient.getSignedUrl({
+  const fiveMb = 5 * 10 ** 6
+  const fiveMinutes = 60 * 5
+
+  const { url, fields } = await storageClient.getPresignedPostUrl({
     key: publicId,
-    bucketName: bucketName,
-    expires: 60 * 60,
+    bucketName,
+    expires: fiveMinutes,
     fileType: FileTypes.PROFILE_PHOTO,
     isPublic: true,
+    sizeLimit: fiveMb,
   })
+
+  return {
+    url: url + bucketName,
+    fields,
+  }
 }
 
 export const updatePhoto = async (user: AppUserAttributes) => {
