@@ -11,6 +11,7 @@ import {
   getCommentByPublicId,
   getPostById,
   getPostByPublicId,
+  getAttachmentByPublicId,
 } from '../data'
 
 import { CommentDoc, PostDoc } from '../types'
@@ -81,6 +82,28 @@ export const deleteCommentValidator = middlewareWrapper(
   },
 )
 
+export const updateAttachmentValidator = middlewareWrapper(
+  async ({ params, user }): Promise<void> => {
+    const userId = user?.id as string
+    await checkPermissions({
+      userId,
+      recordId: params.publicId,
+      getRecord: getAttachmentByPublicId,
+    })
+  },
+)
+
+export const deleteAttachmentValidator = middlewareWrapper(
+  async ({ params, user }): Promise<void> => {
+    const userId = user?.id as string
+    await checkPermissions({
+      userId,
+      recordId: params.publicId,
+      getRecord: getAttachmentByPublicId,
+    })
+  },
+)
+
 export const paramPostExists = async (
   req: Request,
   res: Response,
@@ -124,8 +147,8 @@ export const paramCommentWithMongoIdExists = async (
   commentId: string,
 ) => {
   try {
-    const existingPost = await getCommentById(commentId)
-    if (!existingPost) {
+    const existingComment = await getCommentById(commentId)
+    if (!existingComment) {
       return next(new NotFoundError('comment not found'))
     }
 

@@ -44,6 +44,7 @@ export class StorageClient {
       Conditions: [['content-length-range', 0, fiftyMb]],
       Fields: {
         acl: isPublic ? 'public-read' : 'private',
+        'Content-Type': '*',
       },
       Expires: expires,
     })

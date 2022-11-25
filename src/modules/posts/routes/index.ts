@@ -11,6 +11,8 @@ import {
   paramPostExists,
   paramPostWithMongoIdExists,
   paramCommentWithMongoIdExists,
+  deleteAttachmentValidator,
+  updateAttachmentValidator,
 } from '../middleware'
 
 import * as Ctrl from '../controllers'
@@ -53,5 +55,13 @@ router
   .delete('/:postId/comments/:commentId/unlike', Ctrl.unlikeComment)
   //ATTACHMENTS
   .post('/:postId/attachments', Ctrl.createAttachment)
+  .patch('/:postId/attachments/:publicId', [
+    updateAttachmentValidator,
+    Ctrl.updateAttachment,
+  ])
+  .delete('/:postId/attachments/:publicId', [
+    deleteAttachmentValidator,
+    Ctrl.deleteAttachment,
+  ])
 
 export { router as postRoutes }

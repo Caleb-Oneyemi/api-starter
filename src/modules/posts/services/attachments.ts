@@ -5,6 +5,7 @@ import storageClient from '../../../storageClient'
 import { FileTypes, generatePublicId } from '../../../common'
 
 const bucketName: string = config.get('digitalOcean.postAttachmentBucketName')
+const region: string = config.get('digitalOcean.region')
 
 export const createAttachment = async (
   input: Pick<AttachmentAttributes, 'owner' | 'postId'>,
@@ -22,7 +23,23 @@ export const createAttachment = async (
 
   return {
     attachment,
-    url: url + bucketName,
-    fields,
+    upload: {
+      url: url + bucketName,
+      fields,
+    },
   }
+}
+
+export const updateAttachment = async (publicId: string) => {
+  const url = `https://${bucketName}.${region}.digitaloceanspaces.com/${publicId}`
+  return DAL.updateAttachment(publicId, url)
+}
+
+export const deleteAttachment = async (publicId: string) => {
+  await storageClient.removeFile({
+    key: publicId,
+    bucketName: bucketName,
+    fileType: FileTypes.POST_ATTACHMENT,
+  })
+  return DAL.deleteAttachment(publicId)
 }

@@ -19,3 +19,21 @@ export const createAttachment = controllerWrapper(
     })
   },
 )
+
+export const updateAttachment = controllerWrapper(
+  httpStatus.OK,
+  async ({
+    params,
+  }: ControllerInput<{}, { publicId: string }>): Promise<ResponseData> => {
+    return AttachmentService.updateAttachment(params.publicId)
+  },
+)
+
+export const deleteAttachment = controllerWrapper(
+  httpStatus.NO_CONTENT,
+  async ({
+    params,
+  }: ControllerInput<{}, { publicId: string }>): Promise<ResponseData> => {
+    return AttachmentService.deleteAttachment(params.publicId)
+  },
+)
