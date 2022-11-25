@@ -14,6 +14,16 @@ const getCredentials = (type: FileType, params: InitClientParams) => {
           secretAccessKey: params.photoBucketSecretAccessKey,
         },
       }
+    case FileTypes.POST_ATTACHMENT:
+      return {
+        region: params.region,
+        endpoint: params.endpoint,
+        forcePathStyle: false,
+        credentials: {
+          accessKeyId: params.postAttachmentBucketAccessKey,
+          secretAccessKey: params.postAttachmentBucketSecretAccessKey,
+        },
+      }
 
     default:
       throw new Error(`Unknown FileType: ${type} for DO credentials`)

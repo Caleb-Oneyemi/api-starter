@@ -8,4 +8,10 @@ export default new StorageClient({
   photoBucketSecretAccessKey: config.get(
     'digitalOcean.photoBucketSecretAccessKey',
   ),
+  postAttachmentBucketAccessKey: config.get(
+    'digitalOcean.postAttachmentBucketAccessKey',
+  ),
+  postAttachmentBucketSecretAccessKey: config.get(
+    'digitalOcean.postAttachmentBucketSecretAccessKey',
+  ),
 })

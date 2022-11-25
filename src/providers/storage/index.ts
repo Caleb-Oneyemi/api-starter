@@ -36,11 +36,12 @@ export class StorageClient {
     isPublic = false,
   }: ClientMethodInput) {
     const client = getClient(fileType, this.params)
+    const fiftyMb = 5 * 10 ** 7
 
     return createPresignedPost(client, {
       Bucket: bucketName,
       Key: key,
-      Conditions: [['content-length-range', 0, 1024 ** 3]],
+      Conditions: [['content-length-range', 0, fiftyMb]],
       Fields: {
         acl: isPublic ? 'public-read' : 'private',
       },

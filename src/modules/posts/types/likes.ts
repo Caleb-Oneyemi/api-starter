@@ -1,7 +1,7 @@
 import { Document, Model } from 'mongoose'
-import { UserAttributes } from '../../../../common'
-import { CommentAttributes } from '../comments'
-import { PostAttributes } from '../posts'
+import { UserAttributes } from '../../../common'
+import { CommentAttributes } from './comments'
+import { PostAttributes } from './posts'
 
 export interface BaseLikeAttributes {
   owner: string | UserAttributes

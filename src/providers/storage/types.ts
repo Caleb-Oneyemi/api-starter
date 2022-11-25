@@ -7,6 +7,8 @@ export interface InitClientParams {
   endpoint: string
   photoBucketAccessKey: string
   photoBucketSecretAccessKey: string
+  postAttachmentBucketAccessKey: string
+  postAttachmentBucketSecretAccessKey: string
 }
 
 export interface ClientMethodInput {

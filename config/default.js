@@ -20,5 +20,10 @@ module.exports = {
     photoBucketName: process.env.DO_PHOTO_BUCKET_NAME,
     photoBucketAccessKey: process.env.DO_PHOTO_BUCKET_ACCESS_KEY,
     photoBucketSecretAccessKey: process.env.DO_PHOTO_BUCKET_SECRET_ACCESS_KEY,
+    postAttachmentBucketName: process.env.DO_POST_ATTACHMENT_BUCKET_NAME,
+    postAttachmentBucketAccessKey:
+      process.env.DO_POST_ATTACHMENT_BUCKET_ACCESS_KEY,
+    postAttachmentBucketSecretAccessKey:
+      process.env.DO_POST_ATTACHMENT_BUCKET_SECRET_ACCESS_KEY,
   },
 }
