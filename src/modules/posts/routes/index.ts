@@ -51,5 +51,7 @@ router
   .delete('/:postId/unlike', Ctrl.unlikePost)
   .post('/:postId/comments/:commentId/like', Ctrl.likeComment)
   .delete('/:postId/comments/:commentId/unlike', Ctrl.unlikeComment)
+  //ATTACHMENTS
+  .post('/:postId/attachments', Ctrl.createAttachment)
 
 export { router as postRoutes }

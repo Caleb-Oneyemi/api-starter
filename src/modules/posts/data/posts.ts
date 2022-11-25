@@ -23,6 +23,7 @@ export const getAllPosts = ({
       select: 'firstName lastName photoUrl -_id -type',
     })
     .populate('likes')
+    .populate('attachments')
     .exec()
 }
 
@@ -38,6 +39,7 @@ export const getPostsByUser = ({
     .limit(limit)
     .skip((page - 1) * limit)
     .populate('likes')
+    .populate('attachments')
     .exec()
 }
 
@@ -51,6 +53,8 @@ export const getPostByPublicId = async (publicId: string, populate = false) => {
       path: 'owner',
       select: 'firstName lastName photoUrl -_id -type',
     })
+    .populate('likes')
+    .populate('attachments')
     .exec()
 }
 

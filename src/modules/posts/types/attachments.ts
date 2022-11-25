@@ -5,7 +5,7 @@ import { UserAttributes } from '../../../common'
 export interface AttachmentAttributes {
   publicId: string
   postId: string | PostAttributes
-  url: string
+  url?: string
   owner: string | UserAttributes
 }
 
@@ -16,5 +16,5 @@ export interface AttachmentDoc extends AttachmentAttributes, Document {
 }
 
 export interface AttachmentModel extends Model<AttachmentDoc> {
-  build(input: AttachmentAttributes): AttachmentDoc
+  build(input: AttachmentAttributes): Promise<AttachmentDoc>
 }

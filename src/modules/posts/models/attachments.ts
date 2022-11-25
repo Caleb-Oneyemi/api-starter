@@ -1,6 +1,10 @@
 import { Schema, model } from 'mongoose'
 import { UserTypes } from '../../../common'
-import { AttachmentAttributes, AttachmentDoc, AttachmentModel } from '../types'
+import {
+  AttachmentAttributes,
+  AttachmentDoc,
+  AttachmentModel,
+} from '../types/attachments'
 
 const attachmentSchema = new Schema<AttachmentAttributes>(
   {
@@ -8,6 +12,7 @@ const attachmentSchema = new Schema<AttachmentAttributes>(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     postId: {
       type: Schema.Types.ObjectId,
@@ -15,7 +20,6 @@ const attachmentSchema = new Schema<AttachmentAttributes>(
     },
     url: {
       type: String,
-      required: true,
       trim: true,
     },
     owner: {
