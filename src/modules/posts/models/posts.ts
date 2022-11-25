@@ -46,6 +46,13 @@ postSchema.virtual('likes', {
   count: true,
 })
 
+postSchema.virtual('attachments', {
+  ref: 'Attachment',
+  localField: '_id',
+  foreignField: 'postId',
+  justOne: false,
+})
+
 postSchema.statics.build = (input: PostAttributes) => {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   return new Post(input).save()
