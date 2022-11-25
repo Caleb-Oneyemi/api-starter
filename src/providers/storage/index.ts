@@ -1,5 +1,6 @@
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { getClient } from './helpers'
 import { ClientMethodInput, InitClientParams } from './types'
 
@@ -15,14 +16,35 @@ export class StorageClient {
     fileType,
     isPublic = false,
   }: ClientMethodInput) {
+    const client = getClient(fileType, this.params)
     const command = new PutObjectCommand({
       Bucket: bucketName,
       Key: key,
       ACL: isPublic ? 'public-read' : 'private',
     })
 
-    return getSignedUrl(getClient(fileType, this.params), command, {
+    return getSignedUrl(client, command, {
       expiresIn: expires,
+    })
+  }
+
+  async getPresignedPostUrl({
+    key,
+    bucketName,
+    expires,
+    fileType,
+    isPublic = false,
+  }: ClientMethodInput) {
+    const client = getClient(fileType, this.params)
+
+    return createPresignedPost(client, {
+      Bucket: bucketName,
+      Key: key,
+      Conditions: [['content-length-range', 0, 1024 ** 3]],
+      Fields: {
+        acl: isPublic ? 'public-read' : 'private',
+      },
+      Expires: expires,
     })
   }
 
