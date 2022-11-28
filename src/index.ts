@@ -1,7 +1,9 @@
 import config from 'config'
+import mongoose from 'mongoose'
 
 import { app } from './app'
 import { logger } from './common'
+import { client as redis } from './redisClient'
 import './startup'
 
 const port = config.get('port')
@@ -12,6 +14,10 @@ const server = app.listen(port, () => {
 
 const exceptionHandler = (error: Error) => {
   logger.error(error)
+
+  mongoose.disconnect()
+  redis.disconnect()
+
   if (server) {
     server.close()
   }

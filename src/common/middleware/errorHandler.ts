@@ -22,7 +22,7 @@ export const errorHandler = (
     return res.status(status).send({ errors, isSuccess: false })
   }
 
-  logger.warn(err)
+  logger.error(err)
 
   return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
     errors: [{ message: 'something went wrong' }],
