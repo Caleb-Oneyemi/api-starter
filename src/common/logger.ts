@@ -1,10 +1,19 @@
-import { createLogger, format, transports } from 'winston'
+import winston from 'winston'
+import config from 'config'
+import newrelicFormatter from '@newrelic/winston-enricher'
 
+const newrelicWinstonFormatter = newrelicFormatter(winston)
+const env: string = config.get('env')
+
+const { createLogger, format, transports } = winston
 const { combine, colorize, timestamp, printf } = format
 
-export const logger = createLogger({
-  level: 'debug',
-  format: combine(
+const getFormatters = (env: string) => {
+  if (env !== 'development') {
+    return [newrelicWinstonFormatter()]
+  }
+
+  return [
     colorize(),
     timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
@@ -16,6 +25,11 @@ export const logger = createLogger({
 
       return `[api_service: ${timestamp as string}] ${level}: ${message}`
     }),
-  ),
+  ]
+}
+
+export const logger = createLogger({
+  level: 'debug',
+  format: combine(...getFormatters(env)),
   transports: [new transports.Console()],
 })
