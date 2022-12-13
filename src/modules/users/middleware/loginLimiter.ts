@@ -1,7 +1,10 @@
+import config from 'config'
 import { Request, Response, NextFunction } from 'express'
 import { RateLimiterRedis } from 'rate-limiter-flexible'
 import { client } from '../../../redisClient'
 import { RateLimitError } from '../../../common'
+
+const env = config.get('env')
 
 const limiter = new RateLimiterRedis({
   storeClient: client,
@@ -17,6 +20,10 @@ export const loginLimiter = async (
   next: NextFunction,
 ) => {
   try {
+    if (env === 'test') {
+      return next()
+    }
+
     await limiter.consume(req.body.email)
     next()
   } catch (err: any) {
