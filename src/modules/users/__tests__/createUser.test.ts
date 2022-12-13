@@ -1,15 +1,9 @@
 import supertest from 'supertest'
 import { app } from '../../../app'
 import { createAppUser } from '../data'
+import { sendRegistrationMail } from '../../../providers'
 
 const request = supertest(app)
-
-jest.mock('@sendgrid/mail', () => {
-  return {
-    setApiKey: jest.fn(),
-    send: jest.fn(),
-  }
-})
 
 const defaultUser = {
   firstName: 'firstname',
@@ -237,5 +231,14 @@ describe('Create User Tests', () => {
       },
       isSuccess: true,
     })
+
+    expect(sendRegistrationMail).toBeCalledTimes(1)
+    expect(sendRegistrationMail).toBeCalledWith(
+      expect.objectContaining({
+        email: defaultUser.email,
+        firstName: defaultUser.firstName,
+      }),
+      expect.stringMatching(/^ey/),
+    )
   })
 })

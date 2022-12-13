@@ -16,3 +16,11 @@ afterEach(async () => {
     await collection.deleteMany({})
   }
 })
+
+jest.mock('../providers', () => {
+  return {
+    sendRegistrationMail: jest.fn(() => Promise.resolve()),
+    sendEmailVerificationMail: jest.fn(() => Promise.resolve()),
+    sendPasswordResetMail: jest.fn(() => Promise.resolve()),
+  }
+})
