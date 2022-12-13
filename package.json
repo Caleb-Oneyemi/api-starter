@@ -14,7 +14,7 @@
     "start": "NODE_ENV=production pm2 start -i 0 --name api dist/index.js",
     "build": "tsc --project tsconfig.prod.json",
     "dev": "nodemon src/index.ts",
-    "test": "jest --silent",
+    "test": "jest --silent --runInBand",
     "lint": "eslint src",
     "create:migration": "migrate-mongo create",
     "migrate:up": "ts-node src/scripts/migrateUp.ts",
