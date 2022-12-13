@@ -15,7 +15,10 @@ exports.config = {
    * Your New Relic license key.
    */
   license_key: appConfig.get('newRelic.licenseKey'),
-  agent_enabled: appConfig.get('env') !== 'development',
+  agent_enabled: {
+    env: 'NEW_RELIC_ENABLED',
+    default: true,
+  },
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing

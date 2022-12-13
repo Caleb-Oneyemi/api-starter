@@ -2,6 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server'
 
 const EnvVars = Object.freeze({
   JWT_SECRET: 'secret',
+  NEW_RELIC_ENABLED: 'false',
 })
 
 declare global {

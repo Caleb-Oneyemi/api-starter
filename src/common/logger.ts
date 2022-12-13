@@ -9,7 +9,7 @@ const { createLogger, format, transports } = winston
 const { combine, colorize, timestamp, printf } = format
 
 const getFormatters = (env: string) => {
-  if (env !== 'development') {
+  if (env !== 'development' && env !== 'test') {
     return [newrelicWinstonFormatter()]
   }
 

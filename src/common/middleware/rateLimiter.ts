@@ -1,8 +1,11 @@
+import config from 'config'
 import { Request, Response, NextFunction } from 'express'
 import { RateLimiterRedis } from 'rate-limiter-flexible'
 import { RateLimitError } from '../errors'
 import { normalizeIPAddress } from '../utils'
 import { client } from '../../redisClient'
+
+const env = config.get('env')
 
 const limiter = new RateLimiterRedis({
   storeClient: client,
@@ -17,6 +20,10 @@ export const rateLimiter = async (
   res: Response,
   next: NextFunction,
 ) => {
+  if (env === 'test') {
+    return next()
+  }
+
   try {
     const ip = normalizeIPAddress(req.ip) || req.ip
     await limiter.consume(ip)

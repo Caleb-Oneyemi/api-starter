@@ -1,3 +1,3 @@
 export default async function (): Promise<void> {
-  await globalThis.mongoServer.stop()
+  await global.mongoServer.stop()
 }

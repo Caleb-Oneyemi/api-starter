@@ -1,4 +1,4 @@
-const newrelic = require('newrelic')
+require('newrelic')
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
