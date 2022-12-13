@@ -260,9 +260,7 @@ describe('Update User Tests', () => {
   })
 
   test('User update succeeds for valid first name', async () => {
-    const token = generateToken({ id: publicId }, { salt })
     const firstName = 'newname'
-
     const result = await request
       .patch('/api/users')
       .send({ firstName })
@@ -279,9 +277,7 @@ describe('Update User Tests', () => {
   })
 
   test('User update succeeds for valid last name', async () => {
-    const token = generateToken({ id: publicId }, { salt })
     const lastName = 'newname'
-
     const result = await request
       .patch('/api/users')
       .send({ lastName })
@@ -298,9 +294,7 @@ describe('Update User Tests', () => {
   })
 
   test('User update succeeds for valid email', async () => {
-    const token = generateToken({ id: publicId }, { salt })
     const newEmail = 'new@mail.co'
-
     const result = await request
       .patch('/api/users')
       .send({ email: newEmail })
@@ -317,9 +311,7 @@ describe('Update User Tests', () => {
   })
 
   test('User update succeeds for valid phone number', async () => {
-    const token = generateToken({ id: publicId }, { salt })
     const phoneNumber = '+2349876543210'
-
     const result = await request
       .patch('/api/users')
       .send({ phoneNumber })
