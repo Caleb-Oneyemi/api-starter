@@ -1,27 +1,9 @@
 import supertest from 'supertest'
 import { app } from '../../../app'
-import { hashPassword } from '../../../common'
-import { createAppUser, getAppUserByEmail } from '../data'
+import { defaultUser } from '../../../test/helpers'
+import { getAppUserByEmail } from '../data'
 
 const request = supertest(app)
-
-const defaultUser = {
-  firstName: 'firstname',
-  lastName: 'lastname',
-  email: 'user@email.com',
-  phoneNumber: '+2349012345678',
-  password: 'TestPass1&',
-}
-
-beforeEach(async () => {
-  const password = await hashPassword(defaultUser.password)
-  await createAppUser({
-    ...defaultUser,
-    password,
-    publicId: '123',
-    salt: 'salt',
-  })
-})
 
 describe('Login User Tests', () => {
   test('User login fails validation when required input is not provided', async () => {

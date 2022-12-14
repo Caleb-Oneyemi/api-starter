@@ -1,4 +1,7 @@
 import mongoose from 'mongoose'
+import { hashPassword } from '../common'
+import { createAppUser } from '../modules/users/data'
+import { defaultUser, publicId, salt } from './helpers'
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!)
@@ -6,6 +9,16 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.disconnect()
+})
+
+beforeEach(async () => {
+  const password = await hashPassword(defaultUser.password)
+  await createAppUser({
+    ...defaultUser,
+    password,
+    publicId,
+    salt,
+  })
 })
 
 afterEach(async () => {

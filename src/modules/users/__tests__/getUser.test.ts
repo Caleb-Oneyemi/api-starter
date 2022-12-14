@@ -1,29 +1,9 @@
 import supertest from 'supertest'
 import { app } from '../../../app'
-import { hashPassword, generateToken } from '../../../common'
-import { createAppUser } from '../data'
+import { generateToken } from '../../../common'
+import { defaultUser, publicId, salt } from '../../../test/helpers'
 
 const request = supertest(app)
-
-const defaultUser = {
-  firstName: 'firstname',
-  lastName: 'lastname',
-  email: 'user@email.com',
-  phoneNumber: '+2349012345678',
-  password: 'TestPass1&',
-}
-const publicId = '123'
-const salt = 'salt'
-
-beforeEach(async () => {
-  const password = await hashPassword(defaultUser.password)
-  await createAppUser({
-    ...defaultUser,
-    password,
-    publicId,
-    salt,
-  })
-})
 
 describe('Get User Tests', () => {
   test('Getting user details fails if not authenticated', async () => {

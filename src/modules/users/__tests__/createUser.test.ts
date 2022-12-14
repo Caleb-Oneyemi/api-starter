@@ -1,17 +1,10 @@
 import supertest from 'supertest'
 import { app } from '../../../app'
-import { createAppUser } from '../data'
 import { sendRegistrationMail } from '../../../providers'
+import { defaultUser } from '../../../test/helpers'
+import { logger } from '../../../common'
 
 const request = supertest(app)
-
-const defaultUser = {
-  firstName: 'firstname',
-  lastName: 'lastname',
-  email: 'user@email.com',
-  phoneNumber: '+2349012345678',
-  password: 'TestPass1&',
-}
 
 describe('Create User Tests', () => {
   test('User creation fails validation when required input is not provided', async () => {
@@ -202,7 +195,6 @@ describe('Create User Tests', () => {
   })
 
   test('User creation fails when user with email already exists', async () => {
-    await createAppUser({ ...defaultUser, publicId: '123', salt: 'salt' })
     const result = await request.post('/api/users').send(defaultUser)
 
     expect(result.statusCode).toBe(409)
@@ -217,7 +209,12 @@ describe('Create User Tests', () => {
   })
 
   test('User creation succeeds when all requirements are met', async () => {
-    const result = await request.post('/api/users').send(defaultUser)
+    const email = 'new@email.com'
+    const phoneNumber = '+2349876543210'
+    const result = await request
+      .post('/api/users')
+      .send({ ...defaultUser, email, phoneNumber })
+    logger.debug(JSON.stringify(result.body))
 
     expect(result.statusCode).toBe(201)
     expect(result.body).not.toHaveProperty('password')
@@ -226,8 +223,8 @@ describe('Create User Tests', () => {
       data: {
         firstName: defaultUser.firstName,
         lastName: defaultUser.lastName,
-        email: defaultUser.email,
-        phoneNumber: defaultUser.phoneNumber,
+        email: email,
+        phoneNumber: phoneNumber,
       },
       isSuccess: true,
     })
@@ -235,7 +232,7 @@ describe('Create User Tests', () => {
     expect(sendRegistrationMail).toBeCalledTimes(1)
     expect(sendRegistrationMail).toBeCalledWith(
       expect.objectContaining({
-        email: defaultUser.email,
+        email: email,
         firstName: defaultUser.firstName,
       }),
       expect.stringMatching(/^ey/),
