@@ -16,6 +16,20 @@ describe('Get User Tests', () => {
     })
   })
 
+  test('Getting user details fails if token is not a valid jwt token', async () => {
+    const invalidToken = 'invalid'
+    const result = await request
+      .get('/api/users')
+      .send({})
+      .set('Authorization', `Bearer ${invalidToken}`)
+
+    expect(result.statusCode).toBe(401)
+    expect(result.body).toEqual({
+      errors: [{ message: 'Invalid Token' }],
+      isSuccess: false,
+    })
+  })
+
   test('Getting user details fails if user does not exist', async () => {
     const invalidToken = generateToken({ id: '456' }, { salt: 'salt2' })
     const result = await request
@@ -46,14 +60,14 @@ describe('Get User Tests', () => {
 
   test('Getting user details fails if user exists but token has expired', async () => {
     const fiveMinutesAgo = -5 * 60000
-    const token = generateToken(
+    const expiredToken = generateToken(
       { id: publicId },
       { salt, expires: fiveMinutesAgo },
     )
     const result = await request
       .get('/api/users')
       .send({})
-      .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer ${expiredToken}`)
 
     expect(result.statusCode).toBe(401)
     expect(result.body).toEqual({
