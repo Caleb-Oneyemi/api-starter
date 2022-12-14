@@ -2,7 +2,6 @@ import supertest from 'supertest'
 import { app } from '../../../app'
 import { sendRegistrationMail } from '../../../providers'
 import { defaultUser } from '../../../test/helpers'
-import { logger } from '../../../common'
 
 const request = supertest(app)
 
@@ -214,7 +213,6 @@ describe('Create User Tests', () => {
     const result = await request
       .post('/api/users')
       .send({ ...defaultUser, email, phoneNumber })
-    logger.debug(JSON.stringify(result.body))
 
     expect(result.statusCode).toBe(201)
     expect(result.body).not.toHaveProperty('password')
