@@ -2,42 +2,48 @@ import { Request, Response, NextFunction } from 'express'
 import { TokenExpiredError } from 'jsonwebtoken'
 import { validateToken, decodeToken } from '../utils'
 import { NotAuthenticatedError, NotFoundError } from '../errors'
-import { getUserByPublicId } from '../../modules/users/data'
+import { AdminUserDoc, AppUserDoc } from '../types'
 
-export const isAuthenticated = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  const token = req.headers.authorization?.split('Bearer ')[1]
-  if (!token) {
-    return next(new NotAuthenticatedError('Not Authenticated'))
-  }
+type getUserFnType = (
+  publicId: string,
+) => Promise<AppUserDoc | AdminUserDoc | null>
 
-  let user
-  try {
-    const payload = decodeToken(token)
-    user = await getUserByPublicId(payload.id)
-    if (!user) {
-      return next(new NotFoundError('user not found'))
+export const auth = (getUserByPublicId: getUserFnType) => {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const token = req.headers.authorization?.split('Bearer ')[1]
+    if (!token) {
+      return next(new NotAuthenticatedError('Not Authenticated'))
     }
 
-    validateToken(token, user.salt)
-  } catch (err) {
-    if (err instanceof TokenExpiredError) {
-      return next(new NotAuthenticatedError('Token Expired'))
+    let user
+    try {
+      const payload = decodeToken(token)
+      user = await getUserByPublicId(payload.id)
+      if (!user) {
+        return next(new NotFoundError('user not found'))
+      }
+
+      validateToken(token, user.salt)
+    } catch (err) {
+      if (err instanceof TokenExpiredError) {
+        return next(new NotAuthenticatedError('Token Expired'))
+      }
+
+      return next(new NotAuthenticatedError('Invalid Token'))
     }
 
-    return next(new NotAuthenticatedError('Invalid Token'))
+    if (user.type === 'APP_USER') {
+      user.previousResetPasswordToken = undefined
+    }
+
+    req.user = user
+    req.user.password = undefined
+    req.user.salt = undefined
+
+    next()
   }
-
-  if (user.type === 'APP_USER') {
-    user.previousResetPasswordToken = undefined
-  }
-
-  req.user = user
-  req.user.password = undefined
-  req.user.salt = undefined
-
-  next()
 }

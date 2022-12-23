@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { isAuthenticated } from '../../../common'
+import { isAuthenticated } from '../../isAuthenticated'
 
 import {
   userCreationValidator,

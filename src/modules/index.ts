@@ -1,7 +1,7 @@
 import { Router } from 'express'
+import { isAuthenticated } from './isAuthenticated'
 import { userRoutes } from './users'
 import { postRoutes } from './posts'
-import { isAuthenticated } from '../common'
 
 const router = Router()
 
