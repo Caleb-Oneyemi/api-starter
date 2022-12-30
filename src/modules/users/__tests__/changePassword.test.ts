@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { app } from '../../../app'
 import { AppUserDoc, verifyPassword } from '../../../common'
-import { defaultUser, token } from '../../../test/helpers'
+import { defaultUser, token, salt } from '../../../test/helpers'
 import { getAppUserByEmail } from '../data'
 
 const request = supertest(app)
@@ -114,7 +114,7 @@ describe('Change Password Tests', () => {
     })
   })
 
-  test('changing password succeeds when all criteria are met', async () => {
+  test('changing password succeeds when all criteria are met, after which salt is updated', async () => {
     const newPass = 'NewTestPass1&'
     const result = await request
       .patch('/api/users/change-password')
@@ -134,6 +134,7 @@ describe('Change Password Tests', () => {
     })
 
     expect(user).not.toBeNull()
+    expect(user.salt).not.toBe(salt)
     expect(verifyPassword(newPass, user.password)).resolves.toBe(true)
   })
 })
