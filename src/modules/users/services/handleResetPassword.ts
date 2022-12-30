@@ -26,7 +26,7 @@ export const handleResetPassword = async (input: ResetPasswordInput) => {
   }
 
   if (user.previousResetPasswordToken === token) {
-    throw new BadRequestError('reset link expired')
+    throw new BadRequestError('reset token expired')
   }
   handleTokenValidation(token, user.salt)
 
